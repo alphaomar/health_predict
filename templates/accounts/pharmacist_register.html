@@ -1,0 +1,185 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block title %}Pharmacist Registration{% endblock %}
+
+{% block content %}
+<body class="pharmacist-register">
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center mb-5">
+                <h2 class="heading-section">Pharmacist Registration</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="wrap d-md-flex">
+                    <div class="img" style="background-image: url({% static 'core/assest/images/medd2.PNG' %});"></div>
+                    <div class="login-wrap p-4 p-md-5">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="mb-0">Register</h3>
+                            <a href="{% url 'accounts:login' %}" class="text-primary">Already have an account?</a>
+                        </div>
+                        <form method="post" class="signin-form" action="{% url 'accounts:register_pharmacist' %}">
+                            {% csrf_token %}
+                            <div class="form-group mb-3">
+                                <label class="label" for="id_first_name">First Name</label>
+                                {{ form.first_name }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="label" for="id_last_name">Last Name</label>
+                                {{ form.last_name }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="label" for="id_email">Email</label>
+                                {{ form.email }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="label" for="id_password1">Password</label>
+                                {{ form.password1 }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="label" for="id_password2">Confirm Password</label>
+                                {{ form.password2 }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="label" for="id_license_number">License Number</label>
+                                {{ form.license_number }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="label" for="id_pharmacy_name">Pharmacy Name</label>
+                                {{ form.pharmacy_name }}
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control btn btn-primary rounded submit px-3">Register</button>
+                            </div>
+                            {% if form.errors %}
+                                <div class="alert alert-danger mt-3">
+                                    <ul class="mb-0">
+                                        {% for field, errors in form.errors.items %}
+                                            <li>{{ field }}: {{ errors|striptags }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+{% endblock %}
+
+{% block style %}
+<style>
+.pharmacist-register body {
+    font-family: 'Lato', sans-serif;
+    background: #f0f4f8;
+    color: #333;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.pharmacist-register .container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 15px;
+}
+
+.pharmacist-register .heading-section {
+    font-size: 36px;
+    font-weight: 700;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+
+.pharmacist-register .wrap {
+    display: flex;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+}
+
+.pharmacist-register .img {
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.pharmacist-register .login-wrap {
+    flex: 1;
+    padding: 3rem 4rem;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.pharmacist-register .login-wrap h3 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 25px;
+}
+
+.pharmacist-register .signin-form .form-control {
+    border-radius: 5px;
+    height: 45px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.pharmacist-register .signin-form .form-control:focus {
+    border-color: #2980b9;
+    box-shadow: 0 0 8px rgba(41, 128, 185, 0.2);
+}
+
+.pharmacist-register .signin-form .btn {
+    background: #2980b9;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background 0.3s ease;
+}
+
+.pharmacist-register .signin-form .btn:hover {
+    background: #3498db;
+}
+
+.pharmacist-register .alert {
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 5px;
+}
+
+.pharmacist-register .text-primary {
+    color: #2980b9;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.pharmacist-register .text-primary:hover {
+    color: #3498db;
+}
+</style>
+{% endblock %}

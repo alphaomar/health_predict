@@ -1,0 +1,222 @@
+
+{% extends 'base/index.html' %}
+
+{% block content %}
+
+       <div class="container mt-5">
+    <div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Prediction Results</h2>
+            <p class="text-center">
+                Based on the symptoms provided, the most likely diagnosis is <strong>{{ predicted_disease }}</strong>
+                with a probability score of <strong>{{ predicted_probability|floatformat:2 }}%</strong>.
+            </p>
+            <div class="disease-information mb-5">
+                {{ disease_information|safe }}
+            </div>
+
+            <h3 class="text-center mb-4">Doctors Specializing in {{ predicted_disease }}</h3>
+            {% if doctors %}
+                <div class="row g-3">
+                    {% for doctor in doctors %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card doctor-card shadow-sm p-3 bg-white rounded">
+                                <div class="card-body text-center">
+                                    <img src="{{ doctor.profile_picture.url }}" alt="Doctor Profile Picture" class="doctor-img rounded-circle mb-2">
+                                    <h5 class="card-title">{{ doctor.user.first_name }} {{ doctor.user.last_name }}</h5>
+                                    <p class="card-text">
+                                        <strong>{{ doctor.specialization }}</strong><br>
+                                        {{ doctor.hospital_affiliation }}<br>
+                                        <small>Experience: {{ doctor.years_of_experience }} years</small><br>
+                                        <small>Languages: {{ doctor.languages_spoken }}</small>
+                                    </p>
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <button class="btn btn-primary btn-sm flex-fill mx-1">Chat</button>
+                                        <button class="btn btn-success btn-sm flex-fill mx-1">Schedule Appointment</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-warning text-center">
+                    No doctors available for this specialization.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+    </div>
+
+
+       <div class="action-buttons">
+           <a href="{% url 'core:predict_disease' %}" class="btn btn-secondary">Predict Again</a>
+       </div>
+ 
+{% endblock %}
+
+
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+       const ctx = document.getElementById('probabilityChart').getContext('2d');
+       const probability = {{ predicted_probability|floatformat:2 }};
+
+       new Chart(ctx, {
+           type: 'doughnut',
+           data: {
+               labels: ['Predicted Disease', 'Other'],
+               datasets: [{
+                   label: 'Probability',
+                   data: [probability, 100 - probability],
+                   backgroundColor: ['#4CAF50', '#E0E0E0'],
+                   borderColor: ['#388E3C', '#BDBDBD'],
+                   borderWidth: 1
+               }]
+           },
+           options: {
+               responsive: true,
+               plugins: {
+                   legend: {
+                       position: 'bottom',
+                       labels: {
+                           color: '#333',
+                           font: {
+                               size: 14
+                           }
+                       }
+                   }
+               }
+           }
+       });
+   });
+</script>
+
+
+
+{% block style %}
+    <style>
+.result-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.result-header h1 {
+    text-align: center;
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.prediction-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.predicted-disease h2 {
+    font-size: 1.5em;
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+.predicted-disease .disease-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+.prediction-chart {
+    width: 50%;
+}
+
+.disease-information {
+    margin-top: 30px;
+}
+
+.disease-information h2 {
+    font-size: 1.8em;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.disease-content {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    line-height: 1.6;
+}
+
+.action-buttons {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.action-buttons .btn {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.action-buttons .btn:hover {
+    background-color: #0056b3;
+}
+.doctor-card {
+        height: 100%;
+        max-width: 100%;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .doctor-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .doctor-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+    }
+
+    .doctor-card .btn {
+        border-radius: 10px;
+        font-size: 0.66rem;
+        padding: 2px 5px;
+    }
+
+    .doctor-card .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .doctor-card .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .doctor-card .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .doctor-card .btn-success:hover {
+        background-color: #218838;
+        border-color: #218838;
+    }
+
+    .card-text {
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}

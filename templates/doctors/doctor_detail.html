@@ -1,0 +1,346 @@
+{% extends "base/index.html" %}
+{% block content %}
+<div class="container py-5">
+  <!-- Doctor Profile Section -->
+  <div class="row">
+    <div class="col-md-4">
+      <!-- Doctor Profile Card -->
+      <div class="card profile-card shadow-lg">
+        <div class="card-body text-center">
+          <img src="{{ doctor.profile_picture.url }}" class="rounded-circle mb-3 profile-img" alt="Doctor Profile">
+          <h3 class="card-title">Dr. {{ doctor.user.first_name|title }} {{ doctor.user.last_name|title }}</h3>
+          <p class="text-muted">{{ doctor.specialization|title }}</p>
+          <p class="mb-3"><strong>Hospital:</strong> {{ doctor.hospital.name|title }}</p>
+          <p class="mb-3"><strong>Consultation Fee:</strong> ${{ doctor.consultation_fee }}</p>
+
+           <a href="#" class="btn btn-outline-primary btn-block">Chat with Doctor</a>
+           <a href="#" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#appointmentModal">Book Appointment</a>
+
+          <!-- Modal HTML for appointment form -->
+          <div class="modal fade" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="appointmentModalLabel">Schedule Appointment</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="appointmentForm" method="POST" action="{% url 'core:create_appointment' doctor.id %}">
+                    {% csrf_token %}
+
+                    <!-- Check if the user is anonymous and show additional fields -->
+                    {% if not user.is_authenticated %}
+                      <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="phone_number">Phone Number</label>
+                        <input type="text" class="form-control" id="phone_number" name="phone_number" required>
+                      </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                      <label for="appointment_date">Appointment Date</label>
+                      <input type="datetime-local" class="form-control" id="appointment_date" name="appointment_date">
+                    </div>
+                    <div class="form-group">
+                      <label for="appointment_method">Appointment Method</label>
+                      <select class="form-control" id="appointment_method" name="appointment_method">
+                        <option value="online">Online</option>
+                        <option value="in_person">In Person</option>
+                      </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Success Message Container -->
+          <div id="success-message-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <!-- Doctor Statistics & Info Section -->
+      <div class="card shadow-sm p-4">
+        <h4>About Doctor</h4>
+        <hr>
+        <p>{{ doctor.education }}</p>
+        <div class="row">
+          <div class="col-md-4">
+            <strong>Years of Experience:</strong>
+            <p>{{ doctor.years_of_experience }} years</p>
+          </div>
+          <div class="col-md-4">
+            <strong>Languages Spoken:</strong>
+            <p>{{ doctor.languages_spoken }}</p>
+          </div>
+          <div class="col-md-4">
+            <strong>Total Patients:</strong>
+            <p>{{ doctor.total_patients }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <strong>Consultation Fees Collected:</strong>
+            <p>Nle {{ doctor.total_consultation_fees }}</p>
+          </div>
+          <div class="col-md-6">
+            <strong>Last Appointment Date:</strong>
+            <p>{{ doctor.last_appointment_date|date:"M d, Y" }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reviews Section -->
+      <div class="card mt-4 shadow-sm p-4">
+        <h4>Patient Reviews</h4>
+        <hr>
+        {% for review in doctor.reviews.all %}
+          <div class="media mb-3">
+            <img src="https://placehold.co/600x400" class="rounded-circle mr-3 review-profile-img" alt="Patient Profile">
+            <div class="media-body">
+              <h5 class="mt-0">{{ review.patient.user.first_name|title }} {{ review.patient.user.last_name|title }}</h5>
+              <p class="text-muted">{{ review.rating }} Stars</p>
+              <p>{{ review.review_text }}</p>
+              <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+            </div>
+          </div>
+        {% empty %}
+          <p>No reviews available yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Doctors Section -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <h4>Related Doctors</h4>
+      <div class="row">
+        {% for related_doctor in related_doctors %}
+          <div class="col-md-3">
+            <div class="card shadow-sm mb-4">
+              <img src="{{ related_doctor.profile_picture.url }}" class="card-img-top profile-img" alt="Doctor Image">
+              <div class="card-body">
+                <h5 class="card-title">Dr. {{ related_doctor.user.first_name|title }} {{ related_doctor.user.last_name|title }}</h5>
+                <p class="text-muted">{{ related_doctor.specialization }}</p>
+                <p><strong>Hospital:</strong> {{ related_doctor.hospital.name }}</p>
+                <a href="{% url 'core:doctor_detail' related_doctor.pk %}" class="btn btn-outline-primary btn-block">View Profile</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+    {% block extra_scipt %}
+    	<script>
+
+  $(document).ready(function () {
+    $('#appointmentForm').on('submit', function (e) {
+      e.preventDefault();
+      const form = $(this);
+      const actionUrl = form.attr('action');
+
+      $.ajax({
+        type: 'POST',
+        url: actionUrl,
+        data: form.serialize(),
+        success: function (response) {
+          if (response.status === 'success') {
+            // Hide the modal
+            $('#appointmentModal').modal('hide');
+
+            // Ensure modal backdrop is removed
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open'); // Remove 'modal-open' class from body
+            $('body').css('padding-right', '');  // Reset any padding added by Bootstrap
+
+            // Show success message
+            showSuccessMessage("Appointment successfully booked!");
+          }
+        },
+        error: function (response) {
+          alert('There was an error. Please try again.');
+        }
+      });
+    });
+
+    // Function to show the success message
+    function showSuccessMessage(message) {
+      const alertBox = $('<div class="alert alert-success fade-in"></div>').text(message);
+      $('#success-message-container').append(alertBox);
+
+      // Show the message for 3 seconds, then fade it out
+      alertBox.fadeIn(500).delay(3000).fadeOut(500, function () {
+        $(this).remove();
+      });
+    }
+
+    // Clean up modal backdrop when modal is hidden
+    $('#appointmentModal').on('hidden.bs.modal', function () {
+      $('.modal-backdrop').remove(); // Remove any modal backdrop that might still be present
+      $('body').removeClass('modal-open'); // Remove 'modal-open' class
+      $('body').css('padding-right', '');  // Reset body padding to remove side-scroll issue
+    });
+  });
+</script>
+
+    {% endblock %}
+{% endblock %}
+
+{% block style %}
+  <style>
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .review-profile-img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+    }
+
+    .profile-card {
+      background-color: #f8f9fa;
+      border: none;
+    }
+
+    .card {
+      border-radius: 12px;
+    }
+
+    .card-title {
+      font-weight: bold;
+    }
+
+    .btn {
+      border-radius: 20px;
+    }
+
+    .media {
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .profile-img {
+        width: 100px;
+        height: 100px;
+      }
+
+      .review-profile-img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    /* Form Container Styling */
+    .modal-content {
+      border-radius: 15px;
+      border: none;
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Modal Header */
+    .modal-header {
+      background-color: #007bff;
+      color: #fff;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    .modal-title {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .close {
+      color: #fff;
+      font-size: 1.2rem;
+    }
+
+    /* Input Fields Styling */
+    .form-control {
+      border-radius: 10px;
+      border: 1px solid #ced4da;
+      padding: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #007bff;
+      box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.2);
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: #495057;
+    }
+
+    /* Button Styling */
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      box-shadow: 0px 5px 15px rgba(0, 91, 187, 0.5);
+    }
+
+    /* Custom Modal Padding */
+    .modal-body {
+      padding: 20px;
+    }
+
+    /* Success Message Styling */
+    .alert-success {
+      display: none;
+      margin-top: 10px;
+      padding: 15px;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #155724;
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+      border-radius: 10px;
+    }
+
+    /* Fade in Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+  </style>
+{% endblock style %}
+
+
