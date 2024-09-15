@@ -1,0 +1,142 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block content %}
+
+    <section id="feed-detail">
+        <section id="feed-sidebar">
+            <div class="feed">
+                <h3>{{ feed.title }}</h3>
+                <p>
+                    by {{ feed.author.first_name }} {{ feed.author.last_name }}| on {{ feed.created_at }}| with {% for tag in feed.tags.all %} <a href="{% url 'blog:tag-feeds' tag.id %}">{{ tag.name }}</a>, {% endfor %}
+                </p>
+                <video class="feed-video" controls width="100%" height="300px">
+                    <source src="{{ feed.video.url }}" type="video/mp4" >
+                </video>
+                <p>{{ feed.description|safe }}</p>
+                <h3>Author</h3>
+                <div class="feed-author">
+                    <div>
+                        <img src="{% static 'core/assest/images/team/1.jpg' %}" alt="">
+                    </div>
+                    <div class="author">
+                        <h4>{{ feed.author.first_name }} {{ feed.author.last_name }}</h4>
+                        <small>{{ feed.author.role }}</small>
+                    </div>
+                </div>
+                <div id="comments">
+                    <h3>Leave a Comment:</h3>
+                    <form method="post" class="comment-form">
+                        {% csrf_token %}
+                        {{ comment_form }}
+                        <button type="submit" class="butt">Submit Comment</button>
+                    </form>
+                        <div id="comments-section">
+                        <h3 style="margin: 15px 0;">Comments</h3>
+                    {% for comment in comments %}
+                        <div class="comment" id="comment-{{ comment.id }}" >
+                        <strong style="color: darkred">{{ comment.author_name}}</strong>
+                        <p style="color: black">{{ comment.content }}</p>
+                        <small>{{ comment.created_at }}</small>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar">
+        <div class="side-logo">
+            <h2>Feed Resources</h2>
+        </div>
+
+        <div class="sidebar-menu">
+            <div class="menu-section">
+                <h3>Categories</h3>
+                <ul>
+                    {% for category in categories %}
+                    	<li><a href="{% url 'blog:category-feeds' category.id %}">{{ category.name }}</a> <span style="color: blue">({{ category.feed_count }})</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <h3>Diseases</h3>
+                <ul>
+                    {% for disease in diseases %}
+                    	<li><a href="{% url 'blog:disease-feeds' disease.id %}">{{ disease.name }}</a><span style="color: blue">({{ disease.feed_count }})</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <h3>Tags</h3>
+                <ul>
+                    {% for tag in tags %}
+                    	<li><a href="{% url 'blog:tag-feeds' tag.id %}">{{ tag.name }}</a><span style="color: blue">({{ tag.feed_count }})</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    </section>
+    <section id="related-post">
+        <h3>RELATED POSTS</h3>
+        <div class="posts">
+            {% for related_post in related_posts %}
+            <div class="post-card">
+                <div class="post-head">
+                    {% if related_post.image %}
+                    	<img src="{{ related_post.image.url }}" alt="">
+                    {% endif %}
+                </div>
+                <div class="post-body">
+                    <span class="tag tag-teal">{{ related_post.slug }}</span>
+                    <h4>
+                        <a href="{% url 'blog:post-detail' related_post.id %}">{{ related_post.title|title }}</a>
+                    </h4>
+                    <p>
+                      {{ related_post.content|truncatewords:20|safe }}
+                    </p>
+                    <div class="user-info">
+                        <h5>{{ related_post.author.first_name }}</h5>
+                        <small>{{ related_post.created_at }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	{% block scripts %}
+		
+	{% endblock %}
+{% endblock %}
+{% block style %}
+	<link rel="stylesheet" href="{% static 'core/assest/css/background.css' %}">
+    <link rel="stylesheet" href="{% static 'core/assest/css/feed.css' %}">
+{% endblock %}

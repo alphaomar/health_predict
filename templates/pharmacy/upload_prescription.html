@@ -1,0 +1,14 @@
+<!-- templates/pharmacy/upload_prescription.html -->
+{% extends 'base/index.html' %}
+
+{% block content %}
+<h1>Upload Prescription for Order #{{ order.id }}</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload Prescription</button>
+</form>
+
+<a href="{% url 'order_detail' order.id %}">Back to Order</a>
+{% endblock %}

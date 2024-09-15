@@ -1,0 +1,24 @@
+<div class="row">
+    {% for doctor in doctors %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card doctor-card">
+            <img src="{{ doctor.profile_picture.url }}" class="card-img-top" alt="{{ doctor.user.get_full_name }}">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'core:doctor_detail' doctor.id %}">Dr. {{ doctor.user.first_name|title }} {{ doctor.user.last_name |title }}</a>
+                </h5>
+                <p class="card-text">Specialization: {{ doctor.specialization }}</p>
+                <p class="card-text">Consultation Fee: SLL {{ doctor.consultation_fee |default_if_none:"" }}</p>
+                <p class="card-text">Experience: {{ doctor.years_of_experience }} years</p>
+                <p class="card-text">Hospital: {{ doctor.hospital.name }}</p>
+                <a href="{% url 'core:doctor_detail' doctor.id %}" class="btn btn-outline-primary btn-xs">View Profile</a>
+                <a href="#" class="btn btn-outline-success btn-xs">Book Appointment</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <p>No doctors found.</p>
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,31 @@
+<!-- templates/pharmacy/prescription_list.html -->
+{% extends 'base/index.html' %}
+
+{% block content %}
+<h1>My Prescriptions</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Medication</th>
+            <th>Upload Date</th>
+            <th>Expiry Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prescription in prescriptions %}
+        <tr>
+            <td>{{ prescription.medication.name }}</td>
+            <td>{{ prescription.upload_date }}</td>
+            <td>{{ prescription.expiry_date }}</td>
+            <td>{{ prescription.get_status_display }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No prescriptions uploaded yet.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

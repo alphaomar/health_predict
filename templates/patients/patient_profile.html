@@ -1,0 +1,103 @@
+{% extends "base/index.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Profile Picture and QR Code Section -->
+        <div class="col-md-4 text-center">
+            <img src="{{ patient.profile_picture.url }}" class="img-fluid rounded-circle mb-4" alt="Profile Picture" style="width: 150px; height: 150px; object-fit: cover;">
+
+            <!-- QR Code Display -->
+            <h5>Scan to Share Medical Records</h5>
+             <img src="{% url 'core:qr_code_view' patient.user.email %}" class="img-fluid" alt="QR Code" style="max-width: 150px;">
+            <!-- Shareable Link -->
+            <h6>Shareable Link:</h6>
+            <div class="input-group">
+                <input type="text" class="form-control" value="{{ shareable_link }}" id="shareableLink" readonly>
+                <button class="btn btn-outline-primary" onclick="copyToClipboard()">Copy</button>
+            </div>
+        </div>
+
+        <!-- Patient Information Section -->
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3>{{ patient.user.first_name }} {{ patient.user.last_name }}</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Email:</strong> {{ patient.user.email }}</p>
+                    <p><strong>Phone:</strong> {{ patient.phone_number }}</p>
+                    <p><strong>Address:</strong> {{ patient.address }}</p>
+                    <p><strong>Date of Birth:</strong> {{ patient.date_of_birth|date:"F d, Y" }}</p>
+                    <p><strong>Gender:</strong> {{ patient.gender }}</p>
+
+                    <hr>
+
+                    <h5>Medical History</h5>
+                    <p>{{ patient.medical_history }}</p>
+
+                    <h5>Allergies</h5>
+                    <p>{{ patient.allergies }}</p>
+
+                    <h5>Chronic Conditions</h5>
+                    <p>{{ patient.chronic_conditions }}</p>
+
+                    <h5>Family History</h5>
+                    <p>{{ patient.family_history }}</p>
+
+                    <h5>Immunizations</h5>
+                    <p>{{ patient.immunizations }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function copyToClipboard() {
+        var copyText = document.getElementById("shareableLink");
+        copyText.select();
+        document.execCommand("copy");
+        alert("Link copied to clipboard!");
+    }
+</script>
+{% endblock %}
+
+
+{% block css %}
+<style>
+    /* Custom Profile Styling */
+.card {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card-header {
+    border-bottom: 3px solid #fff;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.rounded-circle {
+    border: 5px solid #007bff;
+}
+
+.input-group {
+    margin-top: 10px;
+}
+
+.btn-outline-primary {
+    border-radius: 0 5px 5px 0;
+}
+
+/* Custom Alert Styling */
+.alert {
+    font-size: 1rem;
+    padding: 1rem;
+}
+
+</style>
+{% endblock %}

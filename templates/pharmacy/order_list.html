@@ -1,0 +1,37 @@
+<!-- templates/pharmacy/order_list.html -->
+{% extends 'base/index.html' %}
+
+{% block content %}
+<h1>Your Orders</h1>
+
+{% if orders %}
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.order_date }}</td>
+                <td>${{ order.total_amount }}</td>
+                <td>{{ order.status }}</td>
+                <td>
+                    <a href="{% url 'order_detail' order.id %}">View Details</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>You haven't placed any orders yet.</p>
+{% endif %}
+
+<a href="{% url 'medication_list' %}">Continue Shopping</a>
+{% endblock %}

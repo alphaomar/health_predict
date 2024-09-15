@@ -1,0 +1,91 @@
+{% extends 'base/index.html' %}
+{% load custom_filters %}  <!-- Add this line at the top -->
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Your Cart</h2>
+    {% if cart_items %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Medication</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.medication.name }}</td>
+                    <td>
+                        <form class="update-quantity-form" data-item-id="{{ item.id }}">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control" style="width: 70px;">
+                        </form>
+                    </td>
+                    <td>Le{{ item.medication.price }}</td> 
+                    <td>Le{{ item.subtotal }}</td>
+                    <td>
+                        <form class="remove-item-form" method="post" action="{% url 'pharmacy:remove_from_cart' item.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong>Total:</strong></td>
+                    <td><strong>Le{{ total }}</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        <a href="{% url 'pharmacy:checkout' %}" class="btn btn-primary">Proceed to Checkout</a>
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+    <a href="{% url 'pharmacy:medication_list' %}" class="btn btn-secondary">Continue Shopping</a>
+</div>
+{% endblock %}
+
+<!-- The rest of your template remains the same -->
+
+{% block extra_js %}
+<script>
+    $(document).ready(function(){
+        $('.nav-tabs a').on('click', function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    });
+
+
+    $(document).ready(function() {
+        $('#add-to-cart-form').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    alert('Item added to cart successfully!');
+                    // Update cart count in navbar
+                    $('#cart-count').text(response.cart_count);
+                },
+                error: function(xhr, errmsg, err) {
+                    alert('Error adding item to cart. Please try again.');
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+        });
+    });
+
+
+
+    
+</script>
+{% endblock %}

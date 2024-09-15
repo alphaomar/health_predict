@@ -1,0 +1,117 @@
+{% extends 'dashboard/doctor/index.html' %}
+{% load static %}
+{% block content %}
+    <style>
+        .patient-card {
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+            gap: 20px;
+        }
+
+        .patient-card img {
+            display: block;
+            max-width: 150px;
+            border-radius: 50%;
+            margin: 0 auto;
+            grid-column: span 2; /* Image takes the full width */
+        }
+
+        .patient-card h2 {
+            text-align: center;
+            grid-column: span 2;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .patient-info {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #444;
+            margin-bottom: 10px;
+            text-decoration: underline;
+            grid-column: span 2; /* Section titles take full width */
+        }
+
+        .patient-info strong {
+            display: inline-block;
+            width: 200px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .patient-info span {
+            color: #777;
+        }
+
+        .patient-info p {
+            margin: 5px 0;
+            word-wrap: break-word; /* Handle long words */
+        }
+
+        /* Make the layout responsive */
+        @media (max-width: 768px) {
+            .patient-card {
+                grid-template-columns: 1fr; /* Single column on smaller screens */
+            }
+        }
+    </style>
+
+    <div class="patient-card">
+        {% if patient.profile_picture %}
+            <img src="{{ patient.profile_picture.url }}" alt="Profile Picture">
+        {% endif %}
+        <h2> {{ patient.user.first_name }} {{ patient.user.last_name }}</h2>
+
+        <div class="section-title">Basic Information</div>
+        <div class="patient-info">
+            <strong>Email:</strong> <span>{{ patient.user.email }}</span>
+        </div>
+        <div class="patient-info">
+            <strong>Phone Number:</strong> <span>{{ patient.phone_number|default:"Not provided" }}</span>
+        </div>
+        <div class="patient-info">
+            <strong>Address:</strong> <span>{{ patient.address|default:"Not provided" }}</span>
+        </div>
+        <div class="patient-info">
+            <strong>Date of Birth:</strong> <span>{{ patient.date_of_birth|date:"F d, Y"|default:"Not provided" }}</span>
+        </div>
+        <div class="patient-info">
+            <strong>Gender:</strong> <span>{{ patient.gender|default:"Not provided" }}</span>
+        </div>
+        <div class="patient-info">
+            <strong>Medical History:</strong> <p>{{ patient.medical_history|default:"Not provided" }}</p>
+        </div>
+        <div class="patient-info">
+            <strong>Allergies:</strong> <p>{{ patient.allergies|default:"Not provided" }}</p>
+        </div>
+        <div class="patient-info">
+            <strong>Chronic Conditions:</strong> <p>{{ patient.chronic_conditions|default:"Not provided" }}</p>
+        </div>
+    <div class="patient-info">
+            <strong>Immunizations:</strong> <p>{{ patient.immunizations|default:"Not provided" }}</p>
+        </div>
+    <div class="patient-info">
+            <strong>Primary Care Physician:</strong> <p>{{ patient.primary_care_physician|default:"Not provided" }}</p>
+        </div>
+        <div class="patient-info">
+            <strong>Emergency Contact Name:</strong> <p>{{ patient.emergency_contact_name|default:"Not provided" }}</p>
+        </div>
+     <div class="patient-info">
+            <strong>Emergency Contact Phone:</strong> <p>{{ patient.emergency_contact_phone|default:"Not provided" }}</p>
+        </div>
+    </div>
+{% endblock %}

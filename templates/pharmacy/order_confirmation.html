@@ -1,0 +1,70 @@
+<!-- templates/pharmacy/order_confirmation.html
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Order Confirmation</h1>
+
+<p>Thank you for your order! Your order number is {{ order.id }}.</p>
+
+<h2>Order Details</h2>
+<p>Date: {{ order.order_date }}</p>
+<p>Total: ${{ order.total_amount }}</p>
+<p>Status: {{ order.status }}</p>
+
+<h3>Items</h3>
+<ul>
+{% for item in order.order_items.all %}
+    <li>{{ item.medication.name }} - Quantity: {{ item.quantity }} - Price: ${{ item.price }}</li>
+{% endfor %}
+</ul>
+
+<h3>Delivery Information</h3>
+<p>Address: {{ order.delivery.address }}</p>
+<p>Contact Number: {{ order.delivery.contact_number }}</p>
+<p>Estimated Delivery Date: {{ order.delivery.delivery_date }}</p>
+
+<a href="{% url 'order_list' %}">View All Orders</a>
+{% endblock %} -->
+
+
+
+<!-- templates/pharmacy/confirm_order.html -->
+{% extends 'base/index.html' %}
+
+{% block content %}
+<h1>Confirm Your Order</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Medication</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart.items.all %}
+        <tr>
+            <td>{{ item.medication.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.medication.price }}</td>
+            <td>${{ item.subtotal }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3"><strong>Total:</strong></td>
+            <td><strong>${{ cart.total_price }}</strong></td>
+        </tr>
+    </tfoot>
+</table>
+
+<form method="post" action="{% url 'place_order' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Place Order</button>
+</form>
+
+<a href="{% url 'view_cart' %}" class="btn btn-secondary">Back to Cart</a>
+{% endblock %}

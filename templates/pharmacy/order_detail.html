@@ -1,0 +1,36 @@
+{% extends 'index/base.html' %}
+
+{% block content %}
+<h2>Order Detail</h2>
+<p>Order ID: {{ order.id }}</p>
+<p>Status: {{ order.status }}</p>
+<p>Total Amount: ${{ order.total_amount }}</p>
+
+<h3>Order Items</h3>
+<ul>
+{% for item in order.orderitem_set.all %}
+    <li>{{ item.medication.name }} - Quantity: {{ item.quantity }} - Price: ${{ item.price }}</li>
+{% endfor %}
+</ul>
+
+<h3>Delivery Information</h3>
+{% if order.delivery %}
+    <p>Address: {{ order.delivery.address }}</p>
+    <p>Contact Number: {{ order.delivery.contact_number }}</p>
+    <p>Status: {{ order.delivery.status }}</p>
+    
+    <form method="post" action="{% url 'update_delivery_status' order.id %}">
+        {% csrf_token %}
+        <select name="status">
+            {% for status in order.delivery.STATUS_CHOICES %}
+                <option value="{{ status.0 }}" {% if status.0 == order.delivery.status %}selected{% endif %}>{{ status.1 }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Update Status</button>
+    </form>
+    
+    <a href="{% url 'track_delivery' order.id %}">Track Delivery</a>
+{% else %}
+    <p>This order does not have delivery information.</p>
+{% endif %}
+{% endblock %}

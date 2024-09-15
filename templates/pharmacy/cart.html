@@ -1,0 +1,49 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Your Cart</h1>
+    
+    {% if cart_items %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Medication</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.medication.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>Le{{ item.medication.price }}</td>
+                    <td>Le{{ item.subtotal }}</td>
+                    <td>
+                        <a href="{% url 'pharmacy:remove_from_cart' item.id %}" class="btn btn-sm btn-danger">Remove</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                    <td><strong>Le{{ total }}</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        
+        <a href="{% url 'pharmacy:checkout' %}" class="btn btn-primary">Proceed to Checkout</a>
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+    
+    <a href="{% url 'pharmacy:all_medications' %}" class="btn btn-secondary">Continue Shopping</a>
+</div>
+<br>
+{% endblock %}

@@ -1,0 +1,204 @@
+
+
+{% extends 'base/index.html' %}
+
+{% block content %}
+<body>
+    <section class="section">
+        <div class="container">
+            <!-- Centered Title -->
+            <h1 class="title has-text-centered">Disease Prediction Form</h1>
+
+            <!-- Modern Selected Symptoms Area -->
+            <div class="box" id="selected-symptoms">
+                <h3 class="subtitle">Selected Symptoms:</h3>
+                <div id="selected-symptoms-list" class="tags"></div>
+            </div>
+
+            <!-- The form and search bar area -->
+            <div class="columns is-vcentered">
+                <div class="column is-three-quarters">
+                    <!-- Search field for filtering symptoms -->
+                    <div class="field">
+                        <label class="label">Search Symptoms</label>
+                        <div class="control">
+                            <input class="input" type="text" id="search-symptoms" placeholder="Start typing to search...">
+                        </div>
+                    </div>
+                </div>
+                <div class="column has-text-right">
+                    <!-- Right-Aligned Predict Button -->
+                    <div class="field">
+                        <button class="button is-success is-rounded" type="submit" form="prediction-form">Predict</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The form for selecting symptoms -->
+            <form method="post" id="prediction-form">
+                {% csrf_token %}
+                <div id="symptoms-list" class="symptoms-container">
+                    {% for symptom, label in form.symptoms.field.choices %}
+                    <div class="symptom-card" data-symptom="{{ symptom }}">
+                        <input type="checkbox" name="symptoms" value="{{ symptom }}" id="symptom-{{ symptom }}" style="display: none;">
+                        <span>{{ label }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Script to handle search and update selected symptoms list -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const symptomCards = document.querySelectorAll('.symptom-card');
+            const selectedSymptomsList = document.getElementById('selected-symptoms-list');
+            const searchInput = document.getElementById('search-symptoms');
+
+            function updateSelectedSymptoms() {
+                selectedSymptomsList.innerHTML = '';
+                symptomCards.forEach(function (card) {
+                    const checkbox = card.querySelector('input[type="checkbox"]');
+                    if (checkbox.checked) {
+                        const listItem = document.createElement('span');
+                        listItem.textContent = card.textContent.trim();
+                        listItem.className = 'tag is-link is-light';
+                        selectedSymptomsList.appendChild(listItem);
+                    }
+                });
+            }
+
+            function filterSymptoms() {
+                const query = searchInput.value.toLowerCase();
+                symptomCards.forEach(function (card) {
+                    const label = card.textContent.toLowerCase().trim();
+                    if (label.includes(query)) {
+                        card.style.display = 'inline-block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+
+            symptomCards.forEach(function (card) {
+                card.addEventListener('click', function () {
+                    const checkbox = card.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+                    card.classList.toggle('selected');
+                    updateSelectedSymptoms();
+                });
+            });
+
+            searchInput.addEventListener('input', filterSymptoms);
+
+            updateSelectedSymptoms();
+        });
+    </script>
+</body>
+{% endblock %}
+{% block style %}
+<style>
+/* Center the title */
+.title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+/* Modern Selected Symptoms Area */
+#selected-symptoms {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+#selected-symptoms-list .tag {
+    margin: 0.3em;
+    font-size: 1em;
+}
+
+/* Symptom Cards */
+.symptoms-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.symptom-card {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #f5f5f5;
+    color: #363636;
+    border-radius: 25px;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 1em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.symptom-card.selected {
+    background-color: #3273dc;
+    color: #fff;
+    border-color: #3273dc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.symptom-card:hover {
+    transform: translateY(-3px);
+    background-color: #3273dc;
+    color: #fff;
+    border-color: #3273dc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Predict Button Aligned with Search Bar */
+.columns.is-vcentered {
+    margin-top: 20px;
+}
+
+.button.is-success.is-rounded {
+    padding: 10px 30px;
+    font-size: 1.2em;
+    border-radius: 30px;
+    background-color: #48c774; /* Green color */
+    border-color: #48c774;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.button.is-success.is-rounded:hover {
+    background-color: #3eb86d; /* Darker green on hover */
+    transform: translateY(-3px);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .symptom-card {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+
+    .button.is-success.is-rounded {
+        width: 100%;
+        text-align: center;
+    }
+
+    .columns.is-vcentered {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .f}
+
+</style>
+{% endblock %}

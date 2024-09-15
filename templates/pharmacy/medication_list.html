@@ -1,0 +1,85 @@
+{% extends 'base/index.html' %}
+
+
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Medications{% if pharmacy %} for {{ pharmacy.name }}{% endif %}</h1>
+
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                {{ form.search.label_tag }}
+                {{ form.search }}
+            </div>
+            <div class="col-md-2 mb-3">
+                {{ form.min_price.label_tag }}
+                {{ form.min_price }}
+            </div>
+            <div class="col-md-2 mb-3">
+                {{ form.max_price.label_tag }}
+                {{ form.max_price }}
+            </div>
+            <div class="col-md-3 mb-3">
+                {{ form.availability.label_tag }}
+                {{ form.availability }}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+        {% if pharmacy %}
+            <a href="{% url 'pharmacy:pharmacy_medications' pharmacy.id %}" class="btn btn-secondary">Clear Filters</a>
+        {% else %}
+            <a href="{% url 'pharmacy:all_medications' %}" class="btn btn-secondary">Clear Filters</a>
+        {% endif %}
+    </form>
+
+    <div class="row">
+        {% for medication in medications %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if medication.image %}
+                    <img src="{{ medication.image.url }}" class="card-img-top" alt="{{ medication.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ medication.name }}</h5>
+                    <p class="card-text">Price: ${{ medication.price }}</p>
+                    <p class="card-text">Pharmacy: {{ medication.pharmacy.name }}</p>
+                    <p class="card-text">Availability: 
+                        {% if medication.availability %}
+                            <span class="badge bg-success">Available</span>
+                        {% else %}
+                            <span class="badge bg-danger">Not Available</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'pharmacy:medication_detail' medication.id %}" class="btn btn-info">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p>No medications found matching your criteria.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page=1">&laquo; first</a></li>
+                <li class="page-item"><a class="page-link" href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}">previous</a></li>
+            {% endif %}
+
+            <li class="page-item active"><a class="page-link" href="#">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.next_page_number }}">next</a></li>
+                <li class="page-item"><a class="page-link" href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

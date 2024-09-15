@@ -1,0 +1,16 @@
+{% extends 'dashboard/doctor/index.html' %}
+{% load static %}
+
+{% block content %}
+  <h2>{% if object %}Update{% else %}Add{% endif %} Patient Profile</h2>
+  <form method="post" action="{% url 'doctor:patient-create' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h3>User Information</h3>
+    {{ user_form.as_p }}
+
+    <h3>Patient Information</h3>
+    {{ profile_form.as_p }}
+
+    <button type="submit" class="btn btn-primary">Register Patient</button>
+</form>
+{% endblock %}

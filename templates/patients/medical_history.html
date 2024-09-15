@@ -1,0 +1,132 @@
+{% extends "base/index.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12 text-center mb-4">
+            <h2>{{ patient.user.first_name }} {{ patient.user.last_name }}'s Medical History</h2>
+        </div>
+
+        <!-- Patient Info Section -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5>Patient Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Email:</strong> {{ patient.user.email }}</p>
+                    <p><strong>Phone:</strong> {{ patient.phone_number }}</p>
+                    <p><strong>Address:</strong> {{ patient.address }}</p>
+                    <p><strong>Date of Birth:</strong> {{ patient.date_of_birth|date:"F d, Y" }}</p>
+                    <p><strong>Gender:</strong> {{ patient.gender }}</p>
+
+                    <!-- QR Code and Shareable Link -->
+                    <hr>
+                    <h6>Share Medical History:</h6>
+                    <img src="{% url 'core:qr_code_view' patient.user.email %}" class="img-fluid" alt="QR Code" style="max-width: 150px;">
+                    <div class="input-group mt-2">
+                        <input type="text" class="form-control" value="{{ shareable_link }}" id="shareableLink" readonly>
+                        <button class="btn btn-outline-info" onclick="copyToClipboard()">Copy Link</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medical History Section -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5>Medical History</h5>
+                </div>
+                <div class="card-body">
+                    {% if medical_records %}
+                        <div class="accordion" id="medicalHistoryAccordion">
+                            {% for record in medical_records %}
+                                <div class="accordion-item mb-3">
+                                    <h2 class="accordion-header" id="heading{{ record.id }}">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ record.id }}" aria-expanded="false" aria-controls="collapse{{ record.id }}">
+                                            <strong>Visit Date:</strong> {{ record.date_of_visit|date:"F d, Y" }} - Diagnosis: {{ record.diagnosis }}
+                                        </button>
+                                    </h2>
+                                    <div id="collapse{{ record.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ record.id }}" data-bs-parent="#medicalHistoryAccordion">
+                                        <div class="accordion-body">
+                                            <p><strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
+                                            <p><strong>Symptoms:</strong> {{ record.symptoms }}</p>
+                                            <p><strong>Notes:</strong> {{ record.notes }}</p>
+                                            <p><strong>Follow-up Date:</strong> {{ record.follow_up_date|date:"F d, Y" }}</p>
+
+                                            <h6>Prescriptions:</h6>
+                                            {% if record.prescriptions.all %}
+                                                <ul>
+                                                    {% for prescription in record.prescriptions.all %}
+                                                        <li><strong>{{ prescription.medication.name }}:</strong> {{ prescription.dosage }} ({{ prescription.frequency }}, {{ prescription.duration }})</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                <p>No prescriptions for this visit.</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>No medical records available for this patient.</p>
+                    {% endif %}
+
+                    <!-- Download Medical History as PDF -->
+                    <a href="{% url 'core:download_medical_history_pdf' patient.shareable_token %}" class="btn btn-outline-success mt-4">
+                        <i class="fas fa-file-pdf"></i> Download Medical History as PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function copyToClipboard() {
+        var copyText = document.getElementById("shareableLink");
+        copyText.select();
+        document.execCommand("copy");
+        alert("Link copied to clipboard!");
+    }
+</script>
+{% endblock %}
+
+{% block css %}
+<style>
+
+/* Custom Styles for Medical History Page */
+.card {
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.accordion-button {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.accordion-item {
+    border: 1px solid #ddd;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+.btn-outline-info {
+    border-radius: 5px;
+}
+
+.input-group {
+    margin-top: 10px;
+}
+
+#shareableLink {
+    font-size: 0.9rem;
+}
+
+</style>
+{% endblock css %}

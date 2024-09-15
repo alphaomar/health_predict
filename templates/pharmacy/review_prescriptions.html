@@ -1,0 +1,38 @@
+<!-- templates/pharmacy/review_prescriptions.html -->
+{% extends 'base/index.html' %}
+
+{% block content %}
+<h1>Review Prescriptions</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Medication</th>
+            <th>Upload Date</th>
+            <th>Expiry Date</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prescription in prescriptions %}
+        <tr>
+            <td>{{ prescription.user.username }}</td>
+            <td>{{ prescription.medication.name }}</td>
+            <td>{{ prescription.upload_date }}</td>
+            <td>{{ prescription.expiry_date }}</td>
+            <td><img src="{{ prescription.image.url }}" alt="Prescription" width="100"></td>
+            <td>
+                <a href="{% url 'approve_prescription' prescription.id %}">Approve</a>
+                <a href="{% url 'reject_prescription' prescription.id %}">Reject</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No prescriptions to review.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

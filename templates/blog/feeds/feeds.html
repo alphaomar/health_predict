@@ -1,0 +1,91 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block content %}
+<!--<section id="section" style="background-color: #454581; display: flex; align-items: center; padding-left: 2%">-->
+<!--    <h3 style="font-size: 55px; color: white; letter-spacing: 5px">SEWABAI <span style="color: rgba(157,37,37,0.98); font-size: 30px">Blog</span></h3>-->
+<!--</section>-->
+    <main style="padding: 0 7%; gap: 2.5rem; display: grid; grid-template-columns: 1fr 3fr 1fr; margin-top: 60px;">
+    <aside class="left-sidebar">
+        <div class="side-logo">
+            <h3>Feed Resources</h3>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-section">
+                <h3>Categories</h3>
+                <ul>
+                    {% for category in categories %}
+                    	<li><a href="{% url 'blog:category-feeds' category.id %}">{{ category.name }}</a> <span style="color: blue">({{ category.feed_count }})</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <h3>Diseases</h3>
+                <ul>
+                    {% for disease in diseases %}
+                    	<li><a href="{% url 'blog:disease-feeds' disease.id %}">{{ disease.name }}</a><span style="color: blue">({{ disease.feed_count }})</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <h3>Tags</h3>
+                <ul>
+                    {% for tag in tags %}
+                    	<li><a href="{% url 'blog:tag-feeds' tag.id %}">{{ tag.name }}</a><span style="color: blue">({{ tag.feed_count }})</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <article style="background-color: black; padding: 30px 100px">
+    <h2 style="text-align: center; color: white; margin-bottom: 30px">Watch Videos</h2>
+            {% for feed in feeds %}
+              <div class="video-container" style="margin-bottom: 50px; background-color: #403f44; padding: 0 10px; border-radius: 5px">
+                <div style="display: flex; gap: 10px; padding-top: 5px">
+                    <img src="{% static 'core/assest/images/sewa.png' %}" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #0d6efd" alt="..">
+                    <div>
+                        <h3><a href="" style="color: white">{{ feed.author.first_name }} {{ feed.author.last_name }}</a></h3>
+                        <small> {{ feed.created_at }}</small>
+                    </div>
+                </div>
+                  <span style="color: white">{{ feed.description|truncatewords:30|safe }}</span>
+                  <a href="{% url 'blog:feed-detail' feed.id %}">
+`                      <video id="feed-video" class="custom-video" controls width="600px" height="200px">
+                        <source src="{{ feed.video.url }}" type="video/mp4">
+                      </video>`
+                  </a>
+                  <div style="display: flex; justify-content: space-between; padding: 4px 3%; align-items: center;">
+                      <div style="display: flex; gap: 10px; align-items: center">
+                          <i class="fa fa-thumbs-up" style="font-size: 24px;background-color: blue; padding: 3px; border-radius: 50%"></i>
+                          <small>1.1k</small>
+                      </div>
+                    <i class="fa fa-thumbs-o-up" style="font-size: 24px;"> Like</i>  
+                    <i class="fa fa-commenting-o" style="font-size: 24px;"> Comment</i>
+                    <small style="color: whitesmoke; font-size: 20px">1 Comments</small>
+                  </div>
+              </div>
+            {% endfor %}
+    </article>
+
+    <aside class="right-aside">
+        <div class="menu-section">
+                <h3>More</h3>
+                <ul>
+                    <li><a href="">Featured Feeds</a></li>
+                </ul>
+        </div>
+    </aside>
+
+</main>
+
+	{% block scripts %}
+
+	{% endblock %}
+{% endblock %}
+{% block style %}
+	<link rel="stylesheet" href="{% static 'core/assest/css/background.css' %}">
+    <link rel="stylesheet" href="{% static 'core/assest/css/feeds.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}

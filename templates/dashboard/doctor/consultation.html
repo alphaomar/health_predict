@@ -1,0 +1,66 @@
+{% extends 'dashboard/doctor/index.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h4 class="card-title">Consultation List</h4>
+      <div class="table-actions">
+        <!-- Add button -->
+        <a href="{% url 'doctor:add_consultation' %}" class="btn btn-success btn-sm">
+          <i class="fas fa-plus"></i> Add a Consultation Records
+        </a>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="doctor-appointment-details" class="display table table-striped table-hover">
+          <thead>
+          <tr>
+           <th>Patient Name</th>
+
+              <th>Date</th>
+
+
+            <th>Actions</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          {% for consultation in consultations %}
+            <tr>
+              <td>{{consultation.appointment.patient.user.first_name }} {{consultation.appointment.patient.user.last_name }}</td>
+               <td>{{ consultation.consultation_date|date:"Y-m-d"}}</td>
+
+
+              <td>
+                <!-- Edit button -->
+               <div class="btn-group" role="group">
+  <a href="{% url 'doctor:consultation_detail' consultation.pk %}" class="btn btn-info btn-sm" style="margin-right: 5px;">
+    <i class="fas fa-eye"></i> View
+  </a>
+  <a href="{% url 'doctor:update_consultation' consultation.pk %}" class="btn btn-warning btn-sm" style="margin-right: 5px;">
+    <i class="fas fa-edit"></i> Edit
+  </a>
+  <a href="{% url 'doctor:delete_consultation' consultation.pk %}" class="btn btn-danger btn-sm" style="margin-right: 5px;" onclick="return confirm('Are you sure you want to delete this appointment?');">
+    <i class="fas fa-trash-alt"></i> Delete
+  </a>
+</div>
+
+
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="6">No consultation record found.</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

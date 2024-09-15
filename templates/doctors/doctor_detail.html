@@ -1,0 +1,463 @@
+{% extends "base/index.html" %}
+{% block content %}
+
+<div class="container py-5">
+  <!-- Doctor Profile Section -->
+  <div class="row">
+    <div class="col-md-4">
+      <!-- Doctor Profile Card -->
+      <div class="card profile-card shadow-lg">
+        <div class="card-body text-center">
+          <img src="{{ doctor.profile_picture.url }}" class="rounded-circle mb-3 profile-img" alt="Doctor Profile">
+          <h3 class="card-title">Dr. {{ doctor.user.first_name|title }} {{ doctor.user.last_name|title }}</h3>
+          <p class="text-muted">{{ doctor.specialization|title }}</p>
+          <p class="mb-3"><strong>Hospital:</strong> {{ doctor.hospital.name|title }}</p>
+          <p class="mb-3"><strong>Consultation Fee:</strong> ${{ doctor.consultation_fee }}</p>
+<a href="{% url 'communication:chat'  %}" class="btn btn-outline-primary btn-block"></i> Articles</a>
+        <button id="chatBtn" class="btn btn-outline-primary btn-block">
+    Chat with Doctor
+</button>
+<a href="#" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#appointmentModal">Book Appointment</a>
+
+
+          <!-- Modal HTML for Appointment Form -->
+          <div class="modal fade" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="appointmentModalLabel">Schedule Appointment</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="appointmentForm" method="POST" action="{% url 'core:create_appointment' doctor.id %}">
+                    {% csrf_token %}
+                    <!-- For Anonymous Users -->
+                    {% if not user.is_authenticated %}
+                    <div class="form-group">
+                      <label for="name">Your Name</label>
+                      <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="phone_number">Phone Number</label>
+                      <input type="text" class="form-control" id="phone_number" name="phone_number" required>
+                    </div>
+                    {% endif %}
+                    <!-- Appointment Date and Method -->
+                   <div class="form-group">
+                      <label for="appointment_date">Appointment Date</label>
+                      <input type="datetime-local" class="form-control" id="appointment_date" name="appointment_date">
+                    </div>
+                    <div class="form-group">
+                      <label for="appointment_method">Appointment Method</label>
+                      <select class="form-control" id="appointment_method" name="appointment_method">
+                        <option value="online">Online</option>
+                        <option value="in_person">In Person</option>
+                      </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Success Message Container -->
+          <div id="success-message-container"></div>
+        </div>
+      </div>
+    </div>
+
+
+<div class="col-md-8">
+  <!-- Doctor Statistics & Info Section -->
+  <div class="card doctor-info-card shadow-sm p-4">
+    <h4 class="card-title">About Doctor</h4>
+    <hr class="divider">
+    <p class="doctor-education">{{ doctor.education }}</p>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="statistic-item">
+          <strong class="statistic-label">Years of Experience:</strong>
+          <p class="statistic-value">{{ doctor.years_of_experience }} years</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="statistic-item">
+          <strong class="statistic-label">Languages Spoken:</strong>
+          <ul class="language-list">
+            {% for language in doctor.languages_spoken.all %}
+              <li class="language-item">{{ language.name }}</li>
+            {% empty %}
+              <li class="language-item">No languages listed.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="statistic-item">
+          <strong class="statistic-label">Total Patients:</strong>
+          <p class="statistic-value">{{ doctor.total_patients }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="statistic-item">
+          <strong class="statistic-label">Consultation Fees Collected:</strong>
+          <p class="statistic-value">${{ doctor.total_consultation_fees }}</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="statistic-item">
+          <strong class="statistic-label">Last Appointment Date:</strong>
+          <p class="statistic-value">{{ doctor.last_appointment_date|date:"M d, Y" }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+      <!-- Reviews Section -->
+      <div class="card mt-4 shadow-sm p-4">
+        <h4>Patient Reviews</h4>
+        <hr>
+        {% for review in doctor.reviews.all %}
+          <div class="media mb-3">
+            <img src="https://placehold.co/600x400" class="rounded-circle mr-3 review-profile-img" alt="Patient Profile">
+            <div class="media-body">
+              <h5 class="mt-0">{{ review.patient.user.first_name|title }} {{ review.patient.user.last_name|title }}</h5>
+              <p class="text-muted">{{ review.rating }} Stars</p>
+              <p>{{ review.review_text }}</p>
+              <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+            </div>
+          </div>
+        {% empty %}
+          <p>No reviews available yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Doctors Section -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <h4>Related Doctors</h4>
+      <div class="row">
+        {% for related_doctor in related_doctors %}
+          <div class="col-md-3">
+            <div class="card shadow-sm mb-4">
+              <img src="{{ related_doctor.profile_picture.url }}" class="card-img-top profile-img" alt="Doctor Image">
+              <div class="card-body">
+                <h5 class="card-title">Dr. {{ related_doctor.user.first_name|title }} {{ related_doctor.user.last_name|title }}</h5>
+                <p class="text-muted">{{ related_doctor.specialization }}</p>
+                <p><strong>Hospital:</strong> {{ related_doctor.hospital.name }}</p>
+                <a href="{% url 'core:doctor_detail' related_doctor.pk %}" class="btn btn-outline-primary btn-block">View Profile</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+    {% block extra_scipt %}
+<script>
+    	$(document).ready(function () {
+    // Handle form submission
+    $('#appointmentForm').on('submit', function (e) {
+        e.preventDefault();
+        const form = $(this);
+        const actionUrl = form.attr('action');
+
+        $.ajax({
+            type: 'POST',
+            url: actionUrl,
+            data: form.serialize(),
+            success: function (response) {
+                if (response.status === 'success') {
+                    handleSuccess();
+                }
+            },
+            error: function () {
+                alert('Error booking appointment. Please try again.');
+            }
+        });
+    });
+
+    // Function to handle successful appointment booking
+    function handleSuccess() {
+        // Hide the modal and clean up
+        $('#appointmentModal').modal('hide');
+        removeModalBackdrop();
+
+        // Show success message
+        showSuccessMessage("Appointment successfully booked!");
+    }
+
+    // Function to remove modal backdrop and reset body styles
+    function removeModalBackdrop() {
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open').css('padding-right', '');
+    }
+
+    // Function to show success message
+    function showSuccessMessage(message) {
+        const alertBox = $('<div class="alert alert-success fade-in"></div>').text(message);
+        $('#success-message-container').append(alertBox);
+
+        // Show the message for 3 seconds, then fade it out
+        alertBox.fadeIn(500).delay(3000).fadeOut(500, function () {
+            $(this).remove();
+        });
+    }
+
+    // Clean up modal backdrop when modal is hidden
+    $('#appointmentModal').on('hidden.bs.modal', function () {
+        removeModalBackdrop();
+    });
+});
+
+
+        </script>
+{% endblock %}
+
+    {% endblock %}
+
+
+{% block style %}
+<style>
+  /* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px; /* Added padding for better spacing */
+}
+
+/* Profile Image */
+.profile-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%; /* Ensures circular image */
+}
+
+.review-profile-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%; /* Ensures circular image */
+}
+
+/* Profile Card */
+.profile-card {
+  background-color: #f8f9fa;
+  border: none;
+  border-radius: 12px; /* Rounded corners */
+  padding: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* General Card Styling */
+.card {
+  border-radius: 12px;
+}
+
+/* Card Title */
+.card-title {
+  font-weight: bold;
+  font-size: 1.5rem; /* Adjusted size for emphasis */
+}
+
+/* Buttons */
+.btn {
+  border-radius: 20px;
+}
+
+/* Primary Button */
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  color: white;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  box-shadow: 0px 5px 15px rgba(0, 91, 187, 0.5);
+}
+
+/* Modal Styling */
+.modal-content {
+  border-radius: 15px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  background-color: #007bff;
+  color: white;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+/* Form Control */
+.form-control {
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  padding: 12px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.2);
+}
+
+/* Modal Body */
+.modal-body {
+  padding: 20px;
+}
+
+/* Success Message */
+.alert-success {
+  display: none;
+  margin-top: 10px;
+  padding: 15px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  border-radius: 10px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .profile-img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .review-profile-img {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* Responsive Elements */
+.resp-advanced-elements {
+  .card-component {
+    max-width: 100%;
+    margin: 0px auto;
+  }
+
+  .card-focus {
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+  }
+
+  .card-focus:hover {
+    transform: scale(0.8, 0.8);
+    transition: transform 0.3s ease;
+  }
+
+  .card-children {
+    max-width: 100%;
+    transition: transform 0.3s ease;
+  }
+
+  .card-children-card {
+    transition: transform 0.3s ease;
+  }
+
+  .card-children-card-container {
+    max-width: 100%;
+    transition: transform 0.3s ease;
+  }
+}
+
+/* Layout and Design Improvement */
+.layout-improvement {
+  .card-layout-adjustment {
+    max-width: 100%;
+    margin: 0px auto;
+  }
+
+  .image-style-adjustment {
+    object-fit: cover;
+    margin: 20px auto;
+    display: block;
+  }
+
+  .button-style-adjustment {
+    border-radius: 20px;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    color: #155724;
+  }
+
+  .button-style-adjustment.hover {
+    background-color: #0056b3;
+    box-shadow: 0px 5px 15px rgba(0, 91, 187, 0.5);
+  }
+}
+
+/* Color Scheme Adjustment */
+.color-scheme-adjustment {
+  .adjusted-color-sarden {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .adjusted-color-container {
+    max-width: 100%;
+    transition: transform 0.3s ease;
+  }
+
+  .adjusted-color-reversal {
+    background-color: #155724;
+  }
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+.chat-log {
+    height: 300px;
+    overflow-y: scroll;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+  }
+  .message {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #e9ecef;
+  }
+
+    </style>
+
+{% endblock style %}
+
+

@@ -1,0 +1,279 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block content %}
+    <div style="padding-left: 3%; margin-top: 40px"><h3 style="margin-bottom: 40px">Featured Posts</h3></div>
+       <section id="f-p" style="display: flex; justify-content: space-evenly; margin-bottom: 60px">
+        {% for featured_post in featured_posts %}
+            <div class="post-card">
+                <div class="post-head">
+                    {% if featured_post.image %}
+                    	<img src="{{ featured_post.image.url }}" alt="">
+                    {% endif %}
+                </div>
+                <div class="post-body">
+                    <span class="tag tag-teal">{{ featured_post.slug }}</span>
+                    <h4>
+                        <a href="{% url 'blog:post-detail' featured_post.id %}">{{ featured_post.title|title }}</a>
+                    </h4>
+                    <p>
+                      {{ featured_post.content|truncatewords:10|safe }}
+                    </p>
+                    <div class="user-info">
+                        <h5>{{ featured_post.author.first_name }}</h5>
+                        <small>{{ featured_post.created_at }}</small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+   
+    </section>
+        
+
+
+<main>
+    <aside class="left-sidebar">
+        <div class="side-logo">
+            <h3>Blog Resources</h3>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-section">
+                <h3>Categories</h3>
+                <ul>
+                    {% for category in categories %}
+                    	<li><a href="{% url 'blog:category_posts' category.name %}">{{ category.name }}</a> <span style="color: blue">({{ category.post_count }})</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <h3>Doctors</h3>
+                <ul>
+                    {% for doctor in doctors %}
+                    	 <li><a href="{% url 'blog:doctor_posts' doctor.id %}">{{ doctor.first_name }} {{ doctor.last_name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <h3>Diseases</h3>
+                <ul>
+                    {% for disease in diseases %}
+                    	<li><a href="{% url 'blog:disease_posts' disease.id %}">{{ disease.name }}</a><span style="color: blue">({{ disease.post_count }})</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <h3>Tags</h3>
+                <ul>
+                    {% for tag in tags %}
+                    	<li><a href="{% url 'blog:tag_posts' tag.name %}">{{ tag.name }}</a><span style="color: blue">({{ tag.post_count }})</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <article>
+          <h3 style="text-align: center; margin-bottom: 30px">Newest Posts</h3>
+        <div class="grid-container">
+        {% for post in posts %}
+            <div class="post-card">
+                <div class="post-head">
+                    {% if post.image %}
+                    	<img src="{{ post.image.url }}" alt="">
+                    {% endif %}
+                </div>
+                <div class="post-body">
+                    <span class="tag tag-teal">{{ post.slug }}</span>
+                    <h4>
+                        <a href="{% url 'blog:post-detail' post.id %}">{{ post.title|title }}</a>
+                    </h4>
+                    <p>
+                      {{ post.content|truncatewords:10|safe }}
+                    </p>
+                    <div class="user-info">
+                        <h5>{{ post.author.first_name }}</h5>
+                        <small>{{ post.created_at }}</small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+
+    </article>
+
+</main>
+
+    {% endblock  %}
+
+    {% block style %}
+
+    	<style>
+            main {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 2.5rem;
+  padding: 0 10%;
+}
+
+
+/* Left Sidebar */
+.left-sidebar {
+}
+
+/* Middle Article */
+article {
+}
+.mypost{
+    margin: 30px 0;
+}
+.mypost #content{
+    color: darkred;
+}
+
+/* Right Sidebar */
+.right-sidebar {
+
+}
+.featured-posts {
+    padding: 0 10%;
+    margin: 50px 0;
+}
+
+.grid-container {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1.5rem;
+}
+.post-card{
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    width: 300px;
+    margin-top: 20px;
+}
+.post-head img{
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.post-body{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  min-height: 250px;
+}
+.tag {
+  background: #cccccc;
+  border-radius: 50px;
+  font-size: 12px;
+  margin: 5px 0;
+  color: #fff;
+  padding: 2px 10px;
+  text-transform: uppercase;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+.tag-teal {
+  background-color: #47bcd4;
+}
+.tag-purple {
+  background-color: #5e76bf;
+}
+.tag-pink {
+  background-color: #cd5b9f;
+}
+.post-body p{
+  font-size: 13px;
+
+}
+.user-info small {
+  color: #545d7a;
+}
+/* sidebar */
+#sidebar{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+.sidebar {
+    width: 250px;
+    padding: 20px;
+    color: white;
+    height: 100%;
+}
+.side-logo h2 {
+    color: black;
+    margin-bottom: 20px;
+}
+.side-logo{
+    border-bottom: 5px solid blue;
+}
+
+
+.sidebar-menu h3 {
+    font-size: 25px;
+    color: darkred;
+    margin-bottom: 10px;
+}
+
+.sidebar-menu ul {;
+    padding-left: 10px;
+}
+
+.sidebar-menu ul li {
+    margin-bottom: 8px;
+}
+
+.sidebar-menu ul li a {
+    color: black;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.sidebar-menu ul li a:hover {
+    color: #e50a0a;
+}
+
+/* Main Content */
+.main-content {
+    padding: 20px;
+}
+
+.main-content h1 {
+    color: #333;
+}
+
+.main-content p {
+    color: #666;
+    line-height: 1.6;
+}
+@media screen  and (max-width: 768px){
+    #main{
+        flex-wrap: wrap;
+    }
+}
+/* Responsive Design */
+@media screen and (max-width: 900px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .grid-container {
+    grid-template-columns: 1fr; /* 1 column on mobile */
+  }
+}
+
+
+        </style>
+    {% endblock %}

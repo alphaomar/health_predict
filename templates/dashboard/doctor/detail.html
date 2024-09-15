@@ -1,0 +1,135 @@
+{% extends 'dashboard/doctor/index.html' %}
+{% load static %}
+{% block content %}
+    <style>
+        .doctor-card {
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+            gap: 20px;
+        }
+
+        .doctor-card img {
+            display: block;
+            max-width: 150px;
+            border-radius: 50%;
+            margin: 0 auto;
+            grid-column: span 2; /* Image takes the full width */
+        }
+
+        .doctor-card h2 {
+            text-align: center;
+            grid-column: span 2;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .doctor-info {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #444;
+            margin-bottom: 10px;
+            text-decoration: underline;
+            grid-column: span 2; /* Section titles take full width */
+        }
+
+        .doctor-info strong {
+            display: inline-block;
+            width: 200px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .doctor-info span {
+            color: #777;
+        }
+
+        .doctor-info p {
+            margin: 5px 0;
+            word-wrap: break-word; /* Handle long words */
+        }
+
+        /* Make the layout responsive */
+        @media (max-width: 768px) {
+            .doctor-card {
+                grid-template-columns: 1fr; /* Single column on smaller screens */
+            }
+        }
+    </style>
+
+    <div class="doctor-card">
+        {% if doctor.profile_picture %}
+            <img src="{{ doctor.profile_picture.url }}" alt="Profile Picture">
+        {% endif %}
+        <h2>Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}</h2>
+
+        <div class="section-title">Basic Information</div>
+        <div class="doctor-info">
+            <strong>Email:</strong> <span>{{ doctor.user.email }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Phone Number:</strong> <span>{{ doctor.phone_number|default:"Not provided" }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Address:</strong> <span>{{ doctor.address|default:"Not provided" }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Date of Birth:</strong> <span>{{ doctor.date_of_birth|date:"F d, Y"|default:"Not provided" }}</span>
+        </div>
+
+        <div class="section-title">Professional Information</div>
+        <div class="doctor-info">
+            <strong>Specialization:</strong> <span>{{ doctor.specialization|default:"Not provided" }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Hospital Affiliation:</strong> <span>{{ doctor.hospital_affiliation|default:"Not provided" }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Years of Experience:</strong> <span>{{ doctor.years_of_experience|default:"Not provided" }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Consultation Fee:</strong> <span>{{ doctor.consultation_fee|default:"Not provided" }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Working Hours:</strong>
+            <p>{{ doctor.working_hours|default:"Not provided" }}</p>
+        </div>
+        <div class="doctor-info">
+            <strong>Languages Spoken:</strong>
+            <p>{{ doctor.languages_spoken|default:"Not provided" }}</p>
+        </div>
+        <div class="doctor-info">
+            <strong>Education:</strong>
+            <p>{{ doctor.education|default:"Not provided" }}</p>
+        </div>
+        <div class="doctor-info">
+            <strong>Certifications:</strong>
+            <p>{{ doctor.certifications|default:"Not provided" }}</p>
+        </div>
+        <div class="doctor-info">
+            <strong>Disease Specialization:</strong>
+            <ul>
+                {% for disease in doctor.disease_specialization.all %}
+                    <li>{{ disease.name }}</li>
+                {% empty %}
+                    <li>None specified</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        
+    </div>
+{% endblock %}

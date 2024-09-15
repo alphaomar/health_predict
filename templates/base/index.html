@@ -1,0 +1,707 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="description" content="Orbitor,business,company,agency,modern,bootstrap4,tech,software">
+  <meta name="author" content="themefisher.com">
+{% block title %}
+  <title>Novena- Health & Care Medical template</title>
+	{% endblock title %}
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'core/assest/images/favicon.ico' %}" />
+
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="{% static 'core/assest/plugins/bootstrap/css/bootstrap.min.css' %}">
+  <!-- Icon Font Css -->
+  <link rel="stylesheet" href="{% static 'core/assest/plugins/icofont/icofont.min.css' %}">
+  <!-- Slick Slider  CSS -->
+  <link rel="stylesheet" href="{% static 'core/assest/plugins/slick-carousel/slick/slick.css' %}">
+  <link rel="stylesheet" href="{% static 'core/assest/plugins/slick-carousel/slick/slick-theme.css' %}">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="{% static 'core/assest/css/style.css' %}">
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Optional JavaScript and Bootstrap Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    .navbar-nav .nav-link {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+    .navbar-nav .dropdown-menu {
+        min-width: 200px;
+    }
+    @media (max-width: 991px) {
+        .navbar-nav .dropdown-menu {
+            border: none;
+            padding-left: 1rem;
+        }
+    }
+    .navbar-brand {
+        margin-right: 2rem; /* Increase space after logo */
+    }
+    @media (min-width: 992px) {
+        .navbar-expand-lg .navbar-nav {
+            margin-left: auto; /* Push nav items to the right on larger screens */
+        }
+    }
+</style>
+
+
+</head>
+
+<body id="top">
+
+<header>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <img src="{% static 'core/assest/images/sewa.png' %}" alt="SewaBai" class="img-fluid">
+        </a>
+
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarmain" aria-controls="navbarmain" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icofont-navigation-menu"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarmain">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'core:home' %}"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'core:predict_disease' %}"><i class="fas fa-stethoscope"></i> Disease Prediction</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'core:doctor_list' %}"><i class="fas fa-user-md"></i> Doctors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'pharmacy:pharmacy_list' %}"><i class="fas fa-pills"></i> Pharmacy</a>
+                </li>
+            <li class="nav-item">
+						<a class="nav-link" href="{% url 'pharmacy:cart' %}">
+							<i class="fas fa-shopping-cart"></i> Cart
+							<span class="badge bg-secondary text-white" id="cart-count">{{ request.user.cart.items.count }}</span>
+						</a>
+					</li>
+
+
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="blog" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-blog"></i>
+                         Blog
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="registerDropdown">
+                        <a class="dropdown-item" href="{% url 'blog:post-list' %}"><i class="fas fa-user-md"></i> Articles</a>
+                        <a class="dropdown-item" href="{% url 'blog:feed-list' %}"><i class="fas fa-feed"></i> Feeds</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="registerDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="registerDropdown">
+                        <a class="dropdown-item" href="{% url 'accounts:register_doctor' %}"><i class="fas fa-user-md"></i> Register Doctor</a>
+                        <a class="dropdown-item" href="{% url 'accounts:register_patient' %}"><i class="fas fa-user"></i> Register Patient</a>
+                        <a class="dropdown-item" href="{% url 'accounts:register_pharmacist' %}"><i class="fas fa-capsules"></i> Register Pharmacist</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-h"></i> More
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="moreDropdown">
+                        <a class="dropdown-item" href="#"><i class="fas fa-phone-alt"></i> Contact</a>
+						  <a class="dropdown-item" href="#"><i class="fas fa-hospital-alt"></i> Hospitals </a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-address-card"></i> About Us</a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> FAQ</a>
+                    </div>
+                </li>
+
+                {% if user.is_authenticated %}
+                    {% if user.role == 'doctor'  %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="doctorDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user-md"></i> Dashboard
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="doctorDropdown">
+								<a class="dropdown-item" href="{% url 'doctor:doctor_report' %}"><i class="fas fa-tachometer-alt"></i> Doctor Dashboard</a>
+								<a class="dropdown-item" href="{% url 'ai_chat:chat' %}"><i class="fas fa-robot-alt"></i> Medical AI Assistant</a>
+                                <a class="dropdown-item" href="{% url 'doctor:doctor_appointments' %}"><i class="fas fa-calendar-check"></i> Manage Appointments</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Update Profile</a>
+                                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                            </div>
+                        </li>
+                    {% elif user.role == 'pharmacist' %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="pharmacistDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-pills"></i> Dashboard
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="pharmacistDropdown">
+                                <a class="dropdown-item" href="#"><i class="fas fa-tachometer-alt"></i> Pharmacist Dashboard</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-boxes"></i> Manage Inventory</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Update Profile</a>
+                                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                            </div>
+                        </li>
+                    {% elif user.role == 'patient' %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="patientDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user"></i> My Account
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="patientDropdown">
+                                <a class="dropdown-item" href="#"><i class="fas fa-tachometer-alt"></i> Patient Dashboard</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-notes-medical"></i> My Consultations</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Update Profile</a>
+								<a class="dropdown-item" href="{% url 'core:patient_profile' %}"><i class="fas fa-file-medical-alt"></i> Medical History</a>
+                                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</header>
+	
+
+
+{% block content %}
+
+
+<!-- Slider Start -->
+<section class="hero-section bg-light text-center py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="display-4 font-weight-bold text-primary">Revolutionizing Healthcare with AI</h1>
+                <p class="lead text-muted mt-4">Empowering doctors, nurses, and patients with AI technology to predict diseases based on symptoms. Join us in transforming the future of healthcare through AI, blockchain, and innovative technology.</p>
+                <a href="#get-started" class="btn btn-primary btn-lg mt-3">Get Started</a>
+            </div>
+            <div class="col-md-6 mt-4 mt-md-0">
+                <img src="{% static 'core/assest/images/medd1.PNG' %}" alt="AI in Healthcare" class="img-fluid">
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+<section class="section service gray-bg">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-7 text-center">
+				<div class="section-title">
+					<h2>Award-Winning Patient Care</h2>
+					<div class="divider mx-auto my-4"></div>
+					<p>Experience the future of healthcare with our cutting-edge services that combine technology and expertise to provide exceptional patient care. From AI-powered diagnostics to blockchain-secured medical records, SewaBai is at the forefront of medical innovation.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="service-item mb-4">
+					<div class="icon d-flex align-items-center">
+						<i class="icofont-robot text-lg"></i>
+						<h4 class="mt-3 mb-3">AI Diagnostics</h4>
+					</div>
+					<div class="content">
+						<p class="mb-4">Leverage the power of AI to analyze medical data and assist in early diagnosis, ensuring timely treatment and improved outcomes.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="service-item mb-4">
+					<div class="icon d-flex align-items-center">
+						<i class="icofont-blockchain text-lg"></i>
+						<h4 class="mt-3 mb-3">Blockchain Security</h4>
+					</div>
+					<div class="content">
+						<p class="mb-4">Secure your medical records with blockchain technology, providing you with unmatched privacy and data integrity.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="service-item mb-4">
+					<div class="icon d-flex align-items-center">
+						<i class="icofont-doctor text-lg"></i>
+						<h4 class="mt-3 mb-3">Consultations</h4>
+					</div>
+					<div class="content">
+						<p class="mb-4">Access top-notch medical consultations from the comfort of your home through our user-friendly platform.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="service-item mb-4">
+					<div class="icon d-flex align-items-center">
+						<i class="icofont-ui-chat text-lg"></i>
+						<h4 class="mt-3 mb-3">Live Chat Support</h4>
+					</div>
+					<div class="content">
+						<p class="mb-4">Connect with healthcare professionals in real-time to address your concerns and receive instant support.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="service-item mb-4">
+					<div class="icon d-flex align-items-center">
+						<i class="icofont-heart-beat-alt text-lg"></i>
+						<h4 class="mt-3 mb-3">Disease Prediction</h4>
+					</div>
+					<div class="content">
+						<p class="mb-4">Predict potential health risks with our advanced algorithms, helping you stay ahead of any medical issues.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="service-item mb-4">
+					<div class="icon d-flex align-items-center">
+						<i class="icofont-pharmacy text-lg"></i>
+						<h4 class="mt-3 mb-3">Pharmacy Services</h4>
+					</div>
+					<div class="content">
+						<p class="mb-4">Get your prescriptions filled quickly and conveniently with our integrated pharmacy services.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section class="section testimonial-2 gray-bg">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-7">
+				<div class="section-title text-center">
+					<h2>We served over 5000+ Patients</h2>
+					<div class="divider mx-auto my-4"></div>
+					<p>Lets know moreel necessitatibus dolor asperiores illum possimus sint voluptates incidunt molestias nostrum laudantium. Maiores porro cumque quaerat.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-lg-12 testimonial-wrap-2">
+				<div class="testimonial-block style-2  gray-bg">
+					<i class="icofont-quote-right"></i>
+
+					<div class="testimonial-thumb">
+						<img src="images/team/test-thumb1.jpg" alt="" class="img-fluid">
+					</div>
+
+					<div class="client-info ">
+						<h4>Amazing service!</h4>
+						<span>John Partho</span>
+						<p>
+							They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
+						</p>
+					</div>
+				</div>
+
+				<div class="testimonial-block style-2  gray-bg">
+					<div class="testimonial-thumb">
+						<img src="images/team/test-thumb2.jpg" alt="" class="img-fluid">
+					</div>
+
+					<div class="client-info">
+						<h4>Expert doctors!</h4>
+						<span>Mullar Sarth</span>
+						<p>
+							They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
+						</p>
+					</div>
+					
+					<i class="icofont-quote-right"></i>
+				</div>
+
+				<div class="testimonial-block style-2  gray-bg">
+					<div class="testimonial-thumb">
+						<img src="images/team/test-thumb3.jpg" alt="" class="img-fluid">
+					</div>
+
+					<div class="client-info">
+						<h4>Good Support!</h4>
+						<span>Kolis Mullar</span>
+						<p>
+							They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
+						</p>
+					</div>
+					
+					<i class="icofont-quote-right"></i>
+				</div>
+
+				<div class="testimonial-block style-2  gray-bg">
+					<div class="testimonial-thumb">
+						<img src="images/team/test-thumb4.jpg" alt="" class="img-fluid">
+					</div>
+
+					<div class="client-info">
+						<h4>Nice Environment!</h4>
+						<span>Partho Sarothi</span>
+						<p class="mt-4">
+							They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
+						</p>
+					</div>
+					<i class="icofont-quote-right"></i>
+				</div>
+
+				<div class="testimonial-block style-2  gray-bg">
+					<div class="testimonial-thumb">
+						<img src="images/team/test-thumb1.jpg" alt="" class="img-fluid">
+					</div>
+
+					<div class="client-info">
+						<h4>Modern Service!</h4>
+						<span>Kolis Mullar</span>
+						<p>
+							They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
+						</p>
+					</div>
+					<i class="icofont-quote-right"></i>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section clients">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-7">
+				<div class="section-title text-center">
+					<h2>Partners who support us</h2>
+					<div class="divider mx-auto my-4"></div>
+					<p>Lets know moreel necessitatibus dolor asperiores illum possimus sint voluptates incidunt molestias nostrum laudantium. Maiores porro cumque quaerat.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row clients-logo">
+			<div class="col-lg-2">
+				<div class="client-thumb">
+					<img src="images/about/1.png" alt="" class="img-fluid">
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="client-thumb">
+					<img src="images/about/2.png" alt="" class="img-fluid">
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="client-thumb">
+					<img src="images/about/3.png" alt="" class="img-fluid">
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="client-thumb">
+					<img src="images/about/4.png" alt="" class="img-fluid">
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="client-thumb">
+					<img src="images/about/5.png" alt="" class="img-fluid">
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="client-thumb">
+					<img src="images/about/6.png" alt="" class="img-fluid">
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="client-thumb">
+					<img src="images/about/3.png" alt="" class="img-fluid">
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="client-thumb">
+					<img src="images/about/4.png" alt="" class="img-fluid">
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="client-thumb">
+					<img src="images/about/5.png" alt="" class="img-fluid">
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="client-thumb">
+					<img src="images/about/6.png" alt="" class="img-fluid">
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
+<!-- Footer Start -->
+<footer class="footer section gray-bg">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-4 mr-auto col-sm-6">
+				<div class="widget mb-5 mb-lg-0">
+					<div class="logo mb-4">
+						<img src="images/logo.png" alt="Django Girls Limkokwing University" class="img-fluid">
+					</div>
+					<p>Empowering the future of healthcare in Africa with cutting-edge AI, blockchain technology, and LLMs. Join us in revolutionizing medical care and pharmacy services across the continent.</p>
+
+					<ul class="list-inline footer-socials mt-4">
+						<li class="list-inline-item"><a href="#"><i class="icofont-facebook"></i></a></li>
+						<li class="list-inline-item"><a href="#"><i class="icofont-twitter"></i></a></li>
+						<li class="list-inline-item"><a href="#"><i class="icofont-linkedin"></i></a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-md-6 col-sm-6">
+				<div class="widget mb-5 mb-lg-0">
+					<h4 class="text-capitalize mb-3">Our Focus</h4>
+					<div class="divider mb-4"></div>
+
+					<ul class="list-unstyled footer-menu lh-35">
+						<li><a href="#">AI in Healthcare</a></li>
+						<li><a href="#">Blockchain Solutions</a></li>
+						<li><a href="#">LLMs for Medicine</a></li>
+						<li><a href="#">Pharmacy Innovations</a></li>
+						<li><a href="#">Healthcare in Africa</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-md-6 col-sm-6">
+				<div class="widget mb-5 mb-lg-0">
+					<h4 class="text-capitalize mb-3">Support</h4>
+					<div class="divider mb-4"></div>
+
+					<ul class="list-unstyled footer-menu lh-35">
+						<li><a href="#">Terms & Conditions</a></li>
+						<li><a href="#">Privacy Policy</a></li>
+						<li><a href="#">Community Support</a></li>
+						<li><a href="#">FAQs</a></li>
+						<li><a href="#">Licensing Info</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-6 col-sm-6">
+				<div class="widget widget-contact mb-5 mb-lg-0">
+					<h4 class="text-capitalize mb-3">Contact Us</h4>
+					<div class="divider mb-4"></div>
+
+					<div class="footer-contact-block mb-4">
+						<div class="icon d-flex align-items-center">
+							<i class="icofont-email mr-3"></i>
+							<span class="h6 mb-0">24/7 Support Available</span>
+						</div>
+						<h4 class="mt-2"><a href="mailto:support@limkokwing-uni.com">support@limkokwing-uni.com</a></h4>
+					</div>
+
+					<div class="footer-contact-block">
+						<div class="icon d-flex align-items-center">
+							<i class="icofont-support mr-3"></i>
+							<span class="h6 mb-0">Mon to Fri : 08:30 - 18:00</span>
+						</div>
+						<h4 class="mt-2"><a href="tel:+232-123-4567">+232-123-4567</a></h4>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="footer-btm py-4 mt-5">
+			<div class="row align-items-center justify-content-between">
+				<div class="col-lg-6">
+					<div class="copyright">
+						&copy; 2024 Django Girls Limkokwing University. All rights reserved. | Empowering Healthcare with AI, Blockchain, and LLMs in Africa.
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="subscribe-form text-lg-right mt-5 mt-lg-0">
+						<form action="#" class="subscribe">
+							<input type="email" class="form-control" placeholder="Your Email Address">
+							<a href="#" class="btn btn-main-2 btn-round-full">Subscribe</a>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-4">
+					<a class="backtop js-scroll-trigger" href="#top">
+						<i class="icofont-long-arrow-up"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+
+    <!-- 
+    Essential Scripts
+    =====================================-->
+
+    
+    <!-- Main jQuery -->
+    <script src="{% static 'core/assest/plugins/jquery/jquery.js' %}"></script>
+    <!-- Bootstrap 4.3.2 -->
+    <script src="{% static 'core/assest/plugins/bootstrap/js/popper.js' %}"></script>
+    <script src="{% static 'core/assest/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'core/assest/plugins/counterup/jquery.easing.js' %}"></script>
+    <!-- Slick Slider -->
+    <script src="{% static 'core/assest/plugins/slick-carousel/slick/slick.min.js' %}"></script>
+    <!-- Counterup -->
+    <script src="{% static 'core/assest/plugins/counterup/jquery.waypoints.min.js' %}"></script>
+    
+    <script src="{% static 'core/assest/plugins/shuffle/shuffle.min.js' %}"></script>
+    <script src="{% static 'core/assest/plugins/counterup/jquery.counterup.min.js' %}"></script>
+    <!-- Google Map -->
+    <script src="{% static 'core/assest/plugins/google-map/map.js' %}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>    
+    
+    <script src="{% static 'core/assest/js/script.js' %}"></script>
+    <script src="{% static 'core/assest/js/contact.js' %}"></script>
+    <script src="{% static 'account/js/jquery.min.js' %}"></script>
+<script src="{% static 'account/js/popper.js' %}"></script>
+<script src="{% static 'account/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'account/js/main.js' %}"></script>
+{% block extra_scipt %}
+	
+{% endblock %}
+
+
+  </body>
+{% block style %}
+
+
+<style>
+    /* Navbar Base Styling */
+#navbar {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    padding: 10px 0;
+    background-color: #f8f9fa; /* Light background for a clean look */
+    border-bottom: 2px solid #007bff; /* Blue bottom border for a medical theme */
+}
+
+/* Navbar Brand Styling */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff; /* Blue color for the brand text */
+    text-transform: uppercase;
+}
+
+.navbar-brand:hover {
+    color: #0056b3; /* Darker blue on hover */
+    text-decoration: none;
+}
+
+/* Toggler Button */
+.navbar-toggler {
+    border: none;
+    outline: none;
+}
+
+.navbar-toggler-icon {
+    color: #007bff; /* Blue color for the toggle icon */
+}
+
+/* Navbar Links Styling */
+.navbar-nav .nav-link {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333; /* Dark grey for text */
+    padding: 10px 15px;
+    transition: color 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav .nav-link i {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+.navbar-nav .nav-link:hover {
+    color: #007bff; /* Blue color on hover */
+}
+
+.navbar-nav .nav-item.active .nav-link {
+    color: #0056b3; /* Darker blue for the active page */
+    font-weight: bold;
+}
+
+/* Dropdown Menu Styling */
+.nav-item .dropdown-menu {
+    background-color: #ffffff; /* White background */
+    border: 1px solid #ddd; /* Light grey border */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    font-size: 0.9rem;
+    color: #333;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.dropdown-item i {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+.dropdown-item:hover {
+    background-color: #007bff; /* Blue background on hover */
+    color: #ffffff; /* White text on hover */
+}
+
+/* Active Dropdown Link Styling */
+.dropdown-menu .dropdown-item.active {
+    background-color: #0056b3; /* Darker blue */
+    color: #ffffff;
+}
+
+/* Responsive Adjustment */
+@media (max-width: 768px) {
+    .navbar-nav .nav-link {
+        font-size: 1.2rem;
+        padding: 10px;
+    }
+
+    .navbar-brand {
+        font-size: 1.8rem;
+    }
+}
+
+
+
+
+</style>
+{% endblock style  %}
+
+
+  </html>
+   

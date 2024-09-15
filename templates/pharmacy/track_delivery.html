@@ -1,0 +1,46 @@
+<!-- templates/pharmacy/track_delivery.html
+{% extends 'base/index.html' %}
+
+{% block content %}
+<h1>Track Your Delivery</h1>
+
+<h2>Order #{{ order.id }}</h2>
+
+<p><strong>Status:</strong> {{ order.delivery.get_status_display }}</p>
+<p><strong>Estimated Delivery Time:</strong> {{ order.delivery.estimated_delivery_time|date:"F d, Y H:i" }}</p>
+
+{% if order.delivery.actual_delivery_time %}
+<p><strong>Actual Delivery Time:</strong> {{ order.delivery.actual_delivery_time|date:"F d, Y H:i" }}</p>
+{% endif %}
+
+<h3>Tracking Information:</h3>
+<p>{{ tracking_info }}</p>
+
+<h3>Delivery Address:</h3>
+<p>{{ order.delivery.address }}</p>
+
+<h3>Contact Number:</h3>
+<p>{{ order.delivery.contact_number }}</p>
+
+{% if order.delivery.delivery_notes %}
+<h3>Delivery Notes:</h3>
+<p>{{ order.delivery.delivery_notes }}</p>
+{% endif %}
+
+<a href="{% url 'order_detail' order.id %}">Back to Order Details</a>
+{% endblock %} -->
+
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Track Delivery</h2>
+<p>Order ID: {{ order.id }}</p>
+<p>Delivery Status: {{ order.delivery.status }}</p>
+
+<h3>Tracking Information</h3>
+{{ tracking_info|linebreaks }}
+
+<a href="{% url 'order_detail' order.id %}">Back to Order Detail</a>
+{% endblock %}

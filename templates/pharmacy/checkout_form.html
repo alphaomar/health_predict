@@ -1,0 +1,33 @@
+<!-- templates/pharmacy/checkout.html -->
+<form method="post">
+    {% csrf_token %}
+    
+    <!-- Address Field -->
+    <div class="form-group">
+        {{ form.address.label_tag }}
+        {{ form.address }}
+        {% if form.address.errors %}
+            <div class="alert alert-danger">{{ form.address.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Contact Number Field -->
+    <div class="form-group">
+        {{ form.contact_number.label_tag }}
+        {{ form.contact_number }}
+        {% if form.contact_number.errors %}
+            <div class="alert alert-danger">{{ form.contact_number.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Payment Method Field -->
+    <div class="form-group">
+        <label>{{ form.payment_method.label }}</label>
+        {{ form.payment_method }}
+        {% if form.payment_method.errors %}
+            <div class="alert alert-danger">{{ form.payment_method.errors }}</div>
+        {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
