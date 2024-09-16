@@ -1,3 +1,4 @@
+![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/dgirls.jpeg?raw=true)
 **HealthPredict: Revolutionizing Healthcare with AI and Machine Learning**
 
 A comprehensive healthcare platform designed to empower medical professionals and patients alike, HealthPredict harnesses the power of Artificial Intelligence (AI) and Machine Learning (ML) to deliver accurate and timely medical diagnoses, ultimately improving healthcare outcomes.
