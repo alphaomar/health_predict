@@ -63,12 +63,12 @@ HealthPredict is licensed under the MIT License.
 ![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture7.PNG?raw=true)
 ![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture8.PNG?raw=true)
 ![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture9.PNG?raw=true)
-![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture10.PNG?raw=true)
-![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture11.PNG?raw=true)
-![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture12.PNG?raw=true)
-![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture13.PNG?raw=true)
-![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture14.PNG?raw=true)
-![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture15.PNG?raw=true)
+![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture10.JPG?raw=true)
+![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture11.JPG?raw=true)
+![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture12.JPG?raw=true)
+![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture13.JPG?raw=true)
+![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture14.JPG?raw=true)
+![alt text](https://github.com/alphaomar/health_predict/blob/version1/screenshot/Capture15.JPG?raw=true)
 
 
 
