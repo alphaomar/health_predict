@@ -2,84 +2,78 @@
 
 {% block content %}
 <div class="container mt-5">
-    <div class="row">
+    <!-- Medical History Title -->
+    <div class="row justify-content-center">
         <div class="col-md-12 text-center mb-4">
             <h2>{{ patient.user.first_name }} {{ patient.user.last_name }}'s Medical History</h2>
         </div>
+    </div>
 
-        <!-- Patient Info Section -->
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header bg-info text-white">
-                    <h5>Patient Information</h5>
-                </div>
-                <div class="card-body">
-                    <p><strong>Email:</strong> {{ patient.user.email }}</p>
-                    <p><strong>Phone:</strong> {{ patient.phone_number }}</p>
-                    <p><strong>Address:</strong> {{ patient.address }}</p>
-                    <p><strong>Date of Birth:</strong> {{ patient.date_of_birth|date:"F d, Y" }}</p>
-                    <p><strong>Gender:</strong> {{ patient.gender }}</p>
+    <!-- Main Content Section with Doctor's Card and Medical History -->
+    <div class="doctor-card">
+        <!-- Left Section: Patient Info -->
+        <div class="doctor-info">
+            <h2>Patient Information</h2>
+            <p><strong>Email:</strong> <span>{{ patient.user.email }}</span></p>
+            <p><strong>Phone:</strong> <span>{{ patient.phone_number }}</span></p>
+            <p><strong>Address:</strong> <span>{{ patient.address }}</span></p>
+            <p><strong>Date of Birth:</strong> <span>{{ patient.date_of_birth|date:"F d, Y" }}</span></p>
+            <p><strong>Gender:</strong> <span>{{ patient.gender }}</span></p>
 
-                    <!-- QR Code and Shareable Link -->
-                    <hr>
-                    <h6>Share Medical History:</h6>
-                    <img src="{% url 'core:qr_code_view' patient.user.email %}" class="img-fluid" alt="QR Code" style="max-width: 150px;">
-                    <div class="input-group mt-2">
-                        <input type="text" class="form-control" value="{{ shareable_link }}" id="shareableLink" readonly>
-                        <button class="btn btn-outline-info" onclick="copyToClipboard()">Copy Link</button>
-                    </div>
-                </div>
+            <!-- QR Code and Shareable Link -->
+            <hr>
+            <h4 class="section-title">Share Medical History</h4>
+            <div class="text-center">
+                <img src="{% url 'core:qr_code_view' patient.user.email %}" alt="QR Code" class="img-fluid">
+            </div>
+            <div class="input-group mt-2">
+                <input type="text" class="form-control" value="{{ shareable_link }}" id="shareableLink" readonly>
+                <button class="btn btn-outline-info" onclick="copyToClipboard()">Copy Link</button>
             </div>
         </div>
 
-        <!-- Medical History Section -->
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h5>Medical History</h5>
-                </div>
-                <div class="card-body">
-                    {% if medical_records %}
-                        <div class="accordion" id="medicalHistoryAccordion">
-                            {% for record in medical_records %}
-                                <div class="accordion-item mb-3">
-                                    <h2 class="accordion-header" id="heading{{ record.id }}">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ record.id }}" aria-expanded="false" aria-controls="collapse{{ record.id }}">
-                                            <strong>Visit Date:</strong> {{ record.date_of_visit|date:"F d, Y" }} - Diagnosis: {{ record.diagnosis }}
-                                        </button>
-                                    </h2>
-                                    <div id="collapse{{ record.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ record.id }}" data-bs-parent="#medicalHistoryAccordion">
-                                        <div class="accordion-body">
-                                            <p><strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
-                                            <p><strong>Symptoms:</strong> {{ record.symptoms }}</p>
-                                            <p><strong>Notes:</strong> {{ record.notes }}</p>
-                                            <p><strong>Follow-up Date:</strong> {{ record.follow_up_date|date:"F d, Y" }}</p>
+        <!-- Right Section: Medical History -->
+        <div class="doctor-info">
+            <h2>Medical History</h2>
+            {% if medical_records %}
+                <div class="accordion" id="medicalHistoryAccordion">
+                    {% for record in medical_records %}
+                        <div class="accordion-item mb-3">
+                            <h2 class="accordion-header" id="heading{{ record.id }}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ record.id }}" aria-expanded="false" aria-controls="collapse{{ record.id }}">
+                                    <strong>Visit Date:</strong> {{ record.date_of_visit|date:"F d, Y" }} - Diagnosis: {{ record.diagnosis }}
+                                </button>
+                            </h2>
+                            <div id="collapse{{ record.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ record.id }}" data-bs-parent="#medicalHistoryAccordion">
+                                <div class="accordion-body">
+                                    <p><strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
+                                    <p><strong>Symptoms:</strong> {{ record.symptoms }}</p>
+                                    <p><strong>Notes:</strong> {{ record.notes }}</p>
+                                    <p><strong>Follow-up Date:</strong> {{ record.follow_up_date|date:"F d, Y" }}</p>
 
-                                            <h6>Prescriptions:</h6>
-                                            {% if record.prescriptions.all %}
-                                                <ul>
-                                                    {% for prescription in record.prescriptions.all %}
-                                                        <li><strong>{{ prescription.medication.name }}:</strong> {{ prescription.dosage }} ({{ prescription.frequency }}, {{ prescription.duration }})</li>
-                                                    {% endfor %}
-                                                </ul>
-                                            {% else %}
-                                                <p>No prescriptions for this visit.</p>
-                                            {% endif %}
-                                        </div>
-                                    </div>
+                                    <h6>Prescriptions:</h6>
+                                    {% if record.prescriptions.all %}
+                                        <ul>
+                                            {% for prescription in record.prescriptions.all %}
+                                                <li><strong>{{ prescription.medication.name }}:</strong> {{ prescription.dosage }} ({{ prescription.frequency }}, {{ prescription.duration }})</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <p>No prescriptions for this visit.</p>
+                                    {% endif %}
                                 </div>
-                            {% endfor %}
+                            </div>
                         </div>
-                    {% else %}
-                        <p>No medical records available for this patient.</p>
-                    {% endif %}
-
-                    <!-- Download Medical History as PDF -->
-                    <a href="{% url 'core:download_medical_history_pdf' patient.shareable_token %}" class="btn btn-outline-success mt-4">
-                        <i class="fas fa-file-pdf"></i> Download Medical History as PDF
-                    </a>
+                    {% endfor %}
                 </div>
-            </div>
+            {% else %}
+                <p>No medical records available for this patient.</p>
+            {% endif %}
+
+            <!-- Download Medical History as PDF -->
+            <a href="{% url 'core:download_medical_history_pdf' patient.shareable_token %}" class="btn btn-outline-success mt-4">
+                <i class="fas fa-file-pdf"></i> Download Medical History as PDF
+            </a>
         </div>
     </div>
 </div>
@@ -96,37 +90,85 @@
 
 {% block css %}
 <style>
+    /* Custom Styles for the Doctor's Card */
+    .doctor-card {
+        max-width: 1200px;
+        margin: 20px auto;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
 
-/* Custom Styles for Medical History Page */
-.card {
-    border-radius: 15px;
-    margin-bottom: 20px;
-}
+    .doctor-card img {
+        display: block;
+        max-width: 150px;
+        border-radius: 50%;
+        margin: 0 auto;
+        grid-column: span 2;
+    }
 
-.accordion-button {
-    font-size: 1rem;
-    font-weight: bold;
-}
+    .doctor-card h2 {
+        text-align: center;
+        grid-column: span 2;
+        color: #333;
+        font-size: 24px;
+    }
 
-.accordion-item {
-    border: 1px solid #ddd;
-}
+    .doctor-info {
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+    }
 
-.accordion-button:focus {
-    box-shadow: none;
-}
+    .section-title {
+        font-size: 18px;
+        color: #444;
+        margin-bottom: 10px;
+        text-decoration: underline;
+        grid-column: span 2;
+    }
 
-.btn-outline-info {
-    border-radius: 5px;
-}
+    .doctor-info strong {
+        display: inline-block;
+        width: 200px;
+        font-weight: bold;
+        color: #555;
+    }
 
-.input-group {
-    margin-top: 10px;
-}
+    .doctor-info span {
+        color: #777;
+    }
 
-#shareableLink {
-    font-size: 0.9rem;
-}
+    .doctor-info p {
+        margin: 5px 0;
+        word-wrap: break-word;
+    }
 
+    @media (max-width: 768px) {
+        .doctor-card {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Custom button styles */
+    .btn-outline-info {
+        border-radius: 5px;
+    }
+
+    /* QR Code section */
+    .input-group {
+        margin-top: 10px;
+    }
+
+    #shareableLink {
+        font-size: 0.9rem;
+    }
 </style>
 {% endblock css %}

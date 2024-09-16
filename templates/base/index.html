@@ -270,7 +270,7 @@
                             </a>  
                             <div class="dropdown-menu" aria-labelledby="patientDropdown">  
                                 <a class="dropdown-item" href="#"><i class="fas fa-tachometer-alt"></i> Patient Dashboard</a>  
-                                <a class="dropdown-item" href="#"><i class="fas fa-notes-medical"></i> My Consultations</a>  
+                                <a class="dropdown-item" href="{% url 'patient:patient_medical_records' %}"><i class="fas fa-notes-medical"></i> My Consultations</a>  
                                 <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Update Profile</a>  
                                 <a class="dropdown-item" href="{% url 'core:patient_profile' %}"><i class="fas fa-file-medical-alt"></i> Medical History</a>  
                                 <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>  
@@ -697,9 +697,9 @@
 <script src="{% static 'account/js/popper.js' %}"></script>
 <script src="{% static 'account/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'account/js/main.js' %}"></script>
-{% block extra_scipt %}
+{% block extra_script %}
 	
-{% endblock %}
+{% endblock extra_script %}
 
 
   </body>

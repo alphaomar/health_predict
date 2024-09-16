@@ -269,7 +269,7 @@ class AppointmentCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('doctor_appointments')
+        return reverse_lazy('doctor:doctor_appointments')
 
 
 class AppointmentUpdateView(LoginRequiredMixin, UpdateView):
@@ -338,7 +338,7 @@ class ConsultationCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('consultation_index')
+        return reverse_lazy('doctor:consultation_index')
 
 
 class ConsultationUpdateView(LoginRequiredMixin, UpdateView):

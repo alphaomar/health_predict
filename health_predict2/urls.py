@@ -34,6 +34,7 @@ urlpatterns = [
     path('pharmacy/', include('pharmacy.urls')),
     path('select2/', include('django_select2.urls')),
     path('payment/', include('payment.urls', namespace='payment')),
+    path('patient/', include('patient.urls', namespace='patient')),
 
 ]
 if settings.DEBUG:

@@ -11,7 +11,7 @@
                 <h3>Medical AI Assistant</h3>
             </div>
             <div id="chat-history" style="height: 50vh; overflow-y: auto;"></div>
-            <form id="chat-form">
+            <form id="chat-form" method="post" action="">
                 <input type="text" id="user-input" name="user_input" placeholder="Type your message..." required />
                 <button type="submit"><i class="fas fa-paper-plane"></i> Send</button>
             </form>
@@ -19,96 +19,116 @@
     </div>
 {% endblock content %}
 
-{% block extra_scipt %}
+{% block extra_script %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#chat-form").submit(function (event) {
-                event.preventDefault();
-                var userInput = $("#user-input").val();
-                $("#user-input").val("");
-                $("#chat-history").append(
-                    "<div class='message'>" +
-                        "<span class='username'>User:</span>" +
-                        " " + userInput +
-                    "</div>"
-                );
-                var aiResponseElement = $("<div class='message ai'></div>");
-                $("#chat-history").append(aiResponseElement);
-                $.ajax({
-                    type: "POST",
-                    url: "",
-                    data: { user_input: userInput },
-                    xhrFields: {
-                        onprogress: function (xhr) {
-                            var response = xhr.target.responseText;
-                            aiResponseElement.html(
-                                "<span class='username'>AI:</span>" +
-                                " " + response
-                            );
-                        },
-                    },
-                });
+<script>
+    $(document).ready(function () {
+        $("#chat-form").submit(function (event) {
+            event.preventDefault(); // Prevent the default form submission
+            var userInput = $("#user-input").val();
+            $("#user-input").val("");
+            $("#chat-history").append(
+                "<div class='message'>" +
+                    "<span class='username'>User:</span>" +
+                    " " + userInput +
+                "</div>"
+            );
+
+            var aiResponseElement = $("<div class='message ai'><span class='username'>AI:</span> <span class='ai-content'></span></div>");
+            $("#chat-history").append(aiResponseElement);
+            var aiContentElement = aiResponseElement.find('.ai-content');
+
+            // Ensure the CSRF token is sent with the request if CSRF protection is enabled
+            var csrftoken = '{{ csrf_token }}';
+
+            $.ajax({
+                type: "POST",
+                url: "",  // Post to the current URL
+                data: { 
+                    user_input: userInput,
+                    csrfmiddlewaretoken: csrftoken  // Include CSRF token if needed
+                },
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState > 2 && xhr.status === 200) {
+                            var response = xhr.responseText;
+                            // Display the latest chunk of the response
+                            aiContentElement.text(response);
+                            $("#chat-history").scrollTop($("#chat-history")[0].scrollHeight);
+                        }
+                    };
+                    return xhr;
+                },
+                success: function(response) {
+                    aiContentElement.text(response);
+                    $("#chat-history").scrollTop($("#chat-history")[0].scrollHeight);
+                },
+                error: function() {
+                    aiContentElement.text("Error generating response. Please try again.");
+                }
             });
         });
-    </script>
-{% endblock extra_scipt %}
+    });
+</script>
+{% endblock extra_script %}
+
 {% block style %}
-    <style>
-        #chat-container {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            overflow: hidden;
-            width: 100%;
-        }
-        #chat-header {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
-        #chat-history {
-            padding: 20px;
-            overflow-y: auto;
-        }
-        #chat-history .message {
-            margin: 10px 0;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-        #chat-history .message .username {
-            font-weight: bold;
-            color: #333;
-        }
-        #chat-history .message.ai {
-            border-radius: 10px;
-            background-color: #f0f0f0;
-        }
-        #chat-form {
-            padding: 10px;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-        #chat-form input {
-            padding: 10px;
-            border: none;
-            width: 80%;
-            border-radius: 10px;
-        }
-        #chat-form button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-        #chat-form button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+<style>
+    #chat-container {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        overflow: hidden;
+        width: 100%;
+    }
+    #chat-header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    #chat-history {
+        padding: 20px;
+        overflow-y: auto;
+    }
+    #chat-history .message {
+        margin: 10px 0;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+    #chat-history .message .username {
+        font-weight: bold;
+        color: #333;
+    }
+    #chat-history .message.ai {
+        border-radius: 10px;
+        background-color: #f0f0f0;
+    }
+    #chat-form {
+        padding: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+    #chat-form input {
+        padding: 10px;
+        border: none;
+        width: 80%;
+        border-radius: 10px;
+    }
+    #chat-form button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    #chat-form button:hover {
+        background-color: #0056b3;
+    }
+</style>
 {% endblock style %}

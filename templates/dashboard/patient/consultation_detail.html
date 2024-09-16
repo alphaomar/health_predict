@@ -1,0 +1,114 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block content %}
+    <style>
+        .doctor-card {
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .doctor-card img {
+            display: block;
+            max-width: 150px;
+            border-radius: 50%;
+            margin: 0 auto;
+            grid-column: span 2;
+        }
+
+        .doctor-card h2 {
+            text-align: center;
+            grid-column: span 2;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .doctor-info {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #444;
+            margin-bottom: 10px;
+            text-decoration: underline;
+            grid-column: span 2;
+        }
+
+        .doctor-info strong {
+            display: inline-block;
+            width: 200px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .doctor-info span {
+            color: #777;
+        }
+
+        .doctor-info p {
+            margin: 5px 0;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 768px) {
+            .doctor-card {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <div class="doctor-card">
+        {% if consultation.appointment.patient.profile_picture %}
+            <img src="{{ consultation.appointment.patient.profile_picture.url }}" alt="Profile Picture">
+        {% endif %}
+        <h2>{{ consultation.appointment.patient.user.first_name }} {{ consultation.appointment.patient.user.last_name }}</h2>
+
+        <!-- Patient Information -->
+        <div class="section-title">Appointment Information</div>
+        <div class="doctor-info">
+            <strong>Appointment Date:</strong> <span>{{ consultation.appointment.appointment_date|date:"Y-m-d" }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Appointment Method:</strong> <span>{{ consultation.appointment.appointment_method }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Status:</strong> <span>{{ consultation.appointment.appointment_status }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Doctor's Name:</strong> <span>{{ consultation.appointment.doctor.user.first_name }} {{ consultation.appointment.doctor.user.last_name }}</span>
+        </div>
+     <div class="doctor-info">
+            <strong>Doctor's Contact:</strong> <span>{{ consultation.appointment.doctor.phone_number|default:'Not Provided' }}</span>
+        </div>
+
+        <!-- Consultation Information -->
+        <div class="section-title">Consultation Details</div>
+        <div class="doctor-info">
+            <strong>Symptoms:</strong> <span>{{ consultation.symptoms|default:"Not provided" }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Diagnosis:</strong> <span>{{ consultation.diagnosis|default:"Not provided" }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Treatment Plan:</strong> <span>{{ consultation.treatment_plan|default:"Not provided" }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Doctor Notes:</strong> <span>{{ consultation.doctor_notes|default:"Not provided" }}</span>
+        </div>
+        <div class="doctor-info">
+            <strong>Date of Consultation:</strong> <span>{{ consultation.consultation_date|date:"F d, Y H:i" }}</span>
+        </div>
+    </div>
+{% endblock %}
