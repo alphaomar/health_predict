@@ -13,11 +13,9 @@
           <p class="text-muted">{{ doctor.specialization|title }}</p>
           <p class="mb-3"><strong>Hospital:</strong> {{ doctor.hospital.name|title }}</p>
           <p class="mb-3"><strong>Consultation Fee:</strong> ${{ doctor.consultation_fee }}</p>
-<a href="{% url 'communication:chat'  %}" class="btn btn-outline-primary btn-block"></i> Articles</a>
-        <button id="chatBtn" class="btn btn-outline-primary btn-block">
-    Chat with Doctor
-</button>
-<a href="#" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#appointmentModal">Book Appointment</a>
+<button id="chatBtn" class="btn btn-outline-primary btn-block">Chat with Doctor</button>
+
+        <a href="#" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#appointmentModal">Book Appointment</a>
 
 
           <!-- Modal HTML for Appointment Form -->
@@ -219,6 +217,10 @@
         removeModalBackdrop();
     });
 });
+      document.getElementById('chatBtn').addEventListener('click', function() {
+        // Redirect to the chat room URL using the doctor's ID
+        window.location.href = "{% url 'communication:room' doctor.id %}";
+    });
 
 
         </script>

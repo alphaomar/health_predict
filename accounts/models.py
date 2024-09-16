@@ -88,6 +88,7 @@ class DoctorProfile(BaseProfessionalProfile):
     average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)
     total_reviews = models.IntegerField(default=0)
     last_appointment_date = models.DateTimeField(blank=True, null=True)
+    room_name = models.CharField(max_length=255, unique=True, null=True, blank=True)
 
     def update_rating(self):
         reviews = self.reviews.all()

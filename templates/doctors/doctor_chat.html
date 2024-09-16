@@ -1,23 +1,93 @@
-{% extends 'dashboard/doctor/index.html' %}
-{% load static %}
-{% block content %}
-<div>
-    What chat room would you like to enter?<br>
-    <input id="room-name-input" type="text" size="100"><br>
-    <input id="room-name-submit" type="button" value="Enter">
-    </div>
-       <script>
-        document.querySelector('#room-name-input').focus();
-        document.querySelector('#room-name-input').onkeyup = function(e) {
-            if (e.key === 'Enter') {  // enter, return
-                document.querySelector('#room-name-submit').click();
-            }
-        };
+{% extends 'base/index.html' %}  
+{% load static %}  
+{% block content %}  
+<div class="room-selector d-flex justify-content-center align-items-center h-100">  
+    <div class="card col-md-6 p-4">  
+        <h3 class="mb-4 text-center">Welcome to HealthPredict Chat</h3>  
+        <form>  
+            <div class="form-floating mb-4">  
+                <input type="text" class="form-control" id="room-name-input" placeholder="Room Name">  
+                <label for="room-name-input">Enter Chat Room Name</label>  
+            </div>  
+            <button type="button" id="room-name-submit" class="btn btn-primary w-100">Enter</button>  
+        </form>  
+    </div>  
+</div>  
 
-        document.querySelector('#room-name-submit').onclick = function(e) {
-            var roomName = document.querySelector('#room-name-input').value;
-            window.location.pathname = '/communication/' + roomName + '/';
-        };
-    </script>
+<script>  
+    // Focus on the input field when the page loads  
+    document.querySelector('#room-name-input').focus();  
 
+    // Submit the form when the user presses the Enter key  
+    document.querySelector('#room-name-input').onkeyup = function(e) {  
+        if (e.key === 'Enter') {  
+            document.querySelector('#room-name-submit').click();  
+        }  
+    };  
+
+    // Redirect to the chat room when the "Enter" button is clicked  
+    document.querySelector('#room-name-submit').onclick = function(e) {  
+        var roomName = document.querySelector('#room-name-input').value;  
+        window.location.pathname = '/communication/' + roomName + '/';  
+    };  
+</script>  
+
+{% endblock %}
+
+{% block style %}
+
+<style>
+.room-selector {  
+    background-image: linear-gradient(to bottom right, #3f51b5, #87a7ce);  
+    height: 100vh;  
+    display: flex;  
+    justify-content: center;  
+    align-items: center;  
+}  
+
+.card {  
+    background-color: #ffffff;  
+    border: none;  
+    border-radius: 10px;  
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);  
+}  
+
+.form-floating {  
+    margin-bottom: 20px;  
+}  
+
+.form-floating input {  
+    border-radius: 5px;  
+    padding: 10px;  
+    border: 1px solid #ced4da;  
+}  
+
+.form-floating label {  
+    color: #333;  
+    padding: 10px;  
+    background-color: #ffffff;  
+}  
+
+.form-floating label::after {  
+    content: '';  
+    position: absolute;  
+    background-color: #337ab7;  
+    transition: 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) transform;  
+    -webkit-transition: 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) transform;  
+    -ms-transition: 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) transform;  
+    -o-transition: 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) transform;  
+    top: 45px;  
+    bottom: 0;  
+    left: 45px;  
+    right: 0;  
+    width: 95%;  
+    height: 95%;  
+    background: none;  
+    border-radius: 5px;  
+}  
+.btn-primary{  
+    background-color: #337ab7;  
+    color: #ffffff;  
+}
+</style>
 {% endblock %}

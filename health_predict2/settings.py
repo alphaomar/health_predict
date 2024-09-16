@@ -14,6 +14,8 @@ from pathlib import Path
 
 import os
 
+import paypalrestsdk
+
 # from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -54,6 +56,7 @@ INSTALLED_APPS = [
     'communication',
     'tinymce',
     'appiontment',
+    'payment',
 
 
 ]
@@ -170,3 +173,28 @@ TINYMCE_DEFAULT_CONFIG = {
     'toolbar': 'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent',
     'content_css': '/static/css/my_custom_styles.css',
 }
+STRIPE_PUBLIC_KEY = 'pk_test_51PyZ5pRrRKHQE8lSo9C8jdxLNPqNPhobAOB012HmHrEuBTgmdzYJKMtV2A5a3OWew2CC3cLP7y9PsxNPG0r56BbN00ySbICWr2'
+STRIPE_SECRET_KEY = 'sk_test_51PyZ5pRrRKHQE8lS9m2q9S9oW2TvSRPV1tm2T9y3pszQHdbUvSMawzemATRFF2s1OZZQ6NzB4wVs8az9tBroFH3y00baa43eNT'
+STRIPE_API_VERSION = '2024-04-10'
+# STRIPE_WEBHOOK_SECRET = 'your_stripe_webhook_secret'
+
+PAYPAL_CLIENT_ID = 'Ab6IHzd7SSL4awEfkc06r9aLMwWJ7Dwd1z3Jvr8E7msFj1OCG_-SpHiL6Uy-CMdEvSNJol6qiw_Mlc-1'
+PAYPAL_CLIENT_SECRET = 'EGjpJA9mYBG3NiEGWksBfmuYpdbVDpdgf_1LgGe3nUY4uwy7t33eJQGjMct25AElaDjhdh_i5CafhRri'
+PAYPAL_API_URL = 'https://api-m.sandbox.paypal.com'
+PAYPAL_MODE = 'sandbox'  # Change to 'live' for production
+
+paypalrestsdk.configure({
+    "mode": PAYPAL_MODE,
+    "client_id": PAYPAL_CLIENT_ID,
+    "client_secret": PAYPAL_CLIENT_SECRET,
+})
+
+PAYPAL_RECEIVER_EMAIL = 'djangogirlssl@gmail.com'
+PAYPAL_TEST = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'djangogirlssl@gmail.com'
+EMAIL_HOST_PASSWORD = 'your-email-password'

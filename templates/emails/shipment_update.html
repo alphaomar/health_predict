@@ -1,0 +1,10 @@
+<!-- templates/emails/shipment_update.html -->
+<html>
+<body>
+    <h1>Shipment Update</h1>
+    <p>Dear {{ order.user.get_full_name }},</p>
+    <p>Your order (Order ID: {{ order.id }}) has been shipped.</p>
+    <p>Estimated delivery date: {{ order.delivery.estimated_delivery_time }}</p>
+    <p>Tracking number: {{ order.delivery.tracking_number }}</p>
+</body>
+</html>

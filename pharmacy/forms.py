@@ -35,7 +35,6 @@ class OrderForm(forms.ModelForm):
         model = Order
         fields = ['delivery_method']
         widgets = {
-            'delivery_method': forms.RadioSelect(attrs={'disabled': 'disabled'}),
             'payment_method': forms.RadioSelect,
         }
 
@@ -48,18 +47,13 @@ class OrderForm(forms.ModelForm):
         cleaned_data = super().clean()
         delivery_method = cleaned_data.get('delivery_method')
         delivery_address = cleaned_data.get('delivery_address')
+        contact_number = cleaned_data.get('contact_number')
 
         if delivery_method == 'delivery' and not delivery_address:
             self.add_error('delivery_address', "Delivery address is required for delivery orders.")
 
-        return cleaned_data
-
-    def clean(self):
-        cleaned_data = super().clean()
-        contact_number = cleaned_data.get('contact_number')
-
         if not contact_number:
-            raise forms.ValidationError("Contact number is required.")
+            self.add_error('contact_number', "Contact number is required.")
 
         return cleaned_data
 

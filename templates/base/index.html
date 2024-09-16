@@ -64,121 +64,230 @@
 <header>
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
-    <div class="container">
-        <a class="navbar-brand" href="index.html">
-            <img src="{% static 'core/assest/images/sewa.png' %}" alt="SewaBai" class="img-fluid">
-        </a>
+{#<nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">#}
+{#    <div class="container">#}
+{#        <a class="navbar-brand" href="index.html">#}
+{#            <img src="{% static 'core/assest/images/sewa.png' %}" alt="SewaBai" class="img-fluid">#}
+{#        </a>#}
+{##}
+{#        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarmain" aria-controls="navbarmain" aria-expanded="false" aria-label="Toggle navigation">#}
+{#            <span class="icofont-navigation-menu"></span>#}
+{#        </button>#}
+{##}
+{#        <div class="collapse navbar-collapse" id="navbarmain">#}
+{#            <ul class="navbar-nav ml-auto">#}
+{#                <li class="nav-item active">#}
+{#                    <a class="nav-link" href="{% url 'core:home' %}"><i class="fas fa-home"></i> Home</a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{% url 'core:predict_disease' %}"><i class="fas fa-stethoscope"></i> Disease Prediction</a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{% url 'core:doctor_list' %}"><i class="fas fa-user-md"></i> Doctors</a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{% url 'pharmacy:pharmacy_list' %}"><i class="fas fa-pills"></i> Pharmacy</a>#}
+{#                </li>#}
+{#            <li class="nav-item">#}
+{#						<a class="nav-link" href="{% url 'pharmacy:cart' %}">#}
+{#							<i class="fas fa-shopping-cart"></i> Cart#}
+{#							<span class="badge bg-secondary text-white" id="cart-count">{{ request.user.cart.items.count }}</span>#}
+{#						</a>#}
+{#					</li>#}
+{##}
+{##}
+{#				<li class="nav-item dropdown">#}
+{#					<a class="nav-link dropdown-toggle" href="#" id="blog" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-blog"></i>#}
+{#                         Blog#}
+{#                    </a>#}
+{#                    <div class="dropdown-menu" aria-labelledby="registerDropdown">#}
+{#                        <a class="dropdown-item" href="{% url 'blog:post-list' %}"><i class="fas fa-user-md"></i> Articles</a>#}
+{#                        <a class="dropdown-item" href="{% url 'blog:feed-list' %}"><i class="fas fa-feed"></i> Feeds</a>#}
+{#                    </div>#}
+{#                </li>#}
+{#                <li class="nav-item dropdown">#}
+{#                    <a class="nav-link dropdown-toggle" href="#" id="registerDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                        <i class="fas fa-user-plus"></i> Register#}
+{#                    </a>#}
+{#                    <div class="dropdown-menu" aria-labelledby="registerDropdown">#}
+{#                        <a class="dropdown-item" href="{% url 'accounts:register_doctor' %}"><i class="fas fa-user-md"></i> Register Doctor</a>#}
+{#                        <a class="dropdown-item" href="{% url 'accounts:register_patient' %}"><i class="fas fa-user"></i> Register Patient</a>#}
+{#                        <a class="dropdown-item" href="{% url 'accounts:register_pharmacist' %}"><i class="fas fa-capsules"></i> Register Pharmacist</a>#}
+{#                    </div>#}
+{#                </li>#}
+{#                <li class="nav-item dropdown">#}
+{#                    <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                        <i class="fas fa-ellipsis-h"></i> More#}
+{#                    </a>#}
+{#                    <div class="dropdown-menu" aria-labelledby="moreDropdown">#}
+{#                        <a class="dropdown-item" href="#"><i class="fas fa-phone-alt"></i> Contact</a>#}
+{#						  <a class="dropdown-item" href="#"><i class="fas fa-hospital-alt"></i> Hospitals </a>#}
+{#                        <a class="dropdown-item" href="#"><i class="fas fa-address-card"></i> About Us</a>#}
+{#                        <a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> FAQ</a>#}
+{#                    </div>#}
+{#                </li>#}
+{##}
+{#                {% if user.is_authenticated %}#}
+{#                    {% if user.role == 'doctor'  %}#}
+{#                        <li class="nav-item dropdown">#}
+{#                            <a class="nav-link dropdown-toggle" href="#" id="doctorDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                                <i class="fas fa-user-md"></i> Dashboard#}
+{#                            </a>#}
+{#                            <div class="dropdown-menu" aria-labelledby="doctorDropdown">#}
+{#								<a class="dropdown-item" href="{% url 'doctor:doctor_report' %}"><i class="fas fa-tachometer-alt"></i> Doctor Dashboard</a>#}
+{#								<a class="dropdown-item" href="{% url 'ai_chat:chat' %}"><i class="fas fa-robot-alt"></i> Medical AI Assistant</a>#}
+{#                                <a class="dropdown-item" href="{% url 'doctor:doctor_appointments' %}"><i class="fas fa-calendar-check"></i> Manage Appointments</a>#}
+{#                                <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Update Profile</a>#}
+{#                                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>#}
+{#                            </div>#}
+{#                        </li>#}
+{#                    {% elif user.role == 'pharmacist' %}#}
+{#                        <li class="nav-item dropdown">#}
+{#                            <a class="nav-link dropdown-toggle" href="#" id="pharmacistDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                                <i class="fas fa-pills"></i> Dashboard#}
+{#                            </a>#}
+{#                            <div class="dropdown-menu" aria-labelledby="pharmacistDropdown">#}
+{#                                <a class="dropdown-item" href="#"><i class="fas fa-tachometer-alt"></i> Pharmacist Dashboard</a>#}
+{#                                <a class="dropdown-item" href="#"><i class="fas fa-boxes"></i> Manage Inventory</a>#}
+{#                                <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Update Profile</a>#}
+{#                                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>#}
+{#                            </div>#}
+{#                        </li>#}
+{#                    {% elif user.role == 'patient' %}#}
+{#                        <li class="nav-item dropdown">#}
+{#                            <a class="nav-link dropdown-toggle" href="#" id="patientDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                                <i class="fas fa-user"></i> My Account#}
+{#                            </a>#}
+{#                            <div class="dropdown-menu" aria-labelledby="patientDropdown">#}
+{#                                <a class="dropdown-item" href="#"><i class="fas fa-tachometer-alt"></i> Patient Dashboard</a>#}
+{#                                <a class="dropdown-item" href="#"><i class="fas fa-notes-medical"></i> My Consultations</a>#}
+{#                                <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Update Profile</a>#}
+{#								<a class="dropdown-item" href="{% url 'core:patient_profile' %}"><i class="fas fa-file-medical-alt"></i> Medical History</a>#}
+{#                                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>#}
+{#                            </div>#}
+{#                        </li>#}
+{#                    {% endif %}#}
+{#                {% else %}#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'accounts:login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>#}
+{#                    </li>#}
+{#                {% endif %}#}
+{#            </ul>#}
+{#        </div>#}
+{#    </div>#}
+{#</nav>#}
+{##}
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">  
+    <div class="container">  
+        <a class="navbar-brand" href="{% url 'core:home' %}">  
+           <img src="{% static 'core/assest/images/logohealth1.jpeg' %}" alt="HealthPredict" class="img-fluid">
+ 
+        </a>  
 
-        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarmain" aria-controls="navbarmain" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="icofont-navigation-menu"></span>
-        </button>
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarmain" aria-controls="navbarmain" aria-expanded="false" aria-label="Toggle navigation">  
+            <span class="icofont-navigation-menu"></span>  
+        </button>  
 
-        <div class="collapse navbar-collapse" id="navbarmain">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'core:home' %}"><i class="fas fa-home"></i> Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'core:predict_disease' %}"><i class="fas fa-stethoscope"></i> Disease Prediction</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'core:doctor_list' %}"><i class="fas fa-user-md"></i> Doctors</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'pharmacy:pharmacy_list' %}"><i class="fas fa-pills"></i> Pharmacy</a>
-                </li>
-            <li class="nav-item">
-						<a class="nav-link" href="{% url 'pharmacy:cart' %}">
-							<i class="fas fa-shopping-cart"></i> Cart
-							<span class="badge bg-secondary text-white" id="cart-count">{{ request.user.cart.items.count }}</span>
-						</a>
-					</li>
+        <div class="collapse navbar-collapse" id="navbarmain">  
+            <ul class="navbar-nav">  
+                <!-- Primary Navigation -->  
+                <li class="nav-item">  
+                    <a class="nav-link" href="{% url 'core:home' %}"><i class="fas fa-home"></i> Home</a>  
+                </li>  
+{#                <li class="nav-item">  #}
+{#                    <a class="nav-link" href="{% url 'core:predict_disease' %}"><i class="fas fa-stethoscope"></i> Disease Prediction</a>  #}
+{#                </li>  #}
+                <li class="nav-item">  
+                    <a class="nav-link" href="{% url 'core:doctor_list' %}"><i class="fas fa-user-md"></i> Doctors</a>  
+                </li>  
+                <li class="nav-item">  
+                    <a class="nav-link" href="{% url 'pharmacy:pharmacy_list' %}"><i class="fas fa-pills"></i> Pharmacy</a>  
+                </li>  
+                <li class="nav-item">  
+                    <a class="nav-link" href="{% url 'pharmacy:cart' %}">  
+                        <i class="fas fa-shopping-cart"></i> Cart  
+                        <span class="badge bg-secondary text-white" id="cart-count">{{ request.user.cart.items.count }}</span>  
+                    </a>  
+                </li>  
 
+                <!-- Resources Dropdown -->  
+                <li class="nav-item dropdown">  
+                    <a class="nav-link dropdown-toggle" href="#" id="resourcesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  
+                        <i class="fas fa-book"></i> Resources  
+                    </a>  
+                    <div class="dropdown-menu" aria-labelledby="resourcesDropdown">  
+                        <a class="dropdown-item" href="{% url 'blog:post-list' %}"><i class="fas fa-user-md"></i> Articles</a>  
+                        <a class="dropdown-item" href="{% url 'blog:feed-list' %}"><i class="fas fa-feed"></i> Feeds</a>  
+                        <a class="dropdown-item" href="{% url 'core:predict_disease' %}"><i class="fas fa-stethoscope"></i> Disease Prediction</a>  
+                    </div>  
+                </li>  
 
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="blog" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-blog"></i>
-                         Blog
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="registerDropdown">
-                        <a class="dropdown-item" href="{% url 'blog:post-list' %}"><i class="fas fa-user-md"></i> Articles</a>
-                        <a class="dropdown-item" href="{% url 'blog:feed-list' %}"><i class="fas fa-feed"></i> Feeds</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="registerDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-user-plus"></i> Register
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="registerDropdown">
-                        <a class="dropdown-item" href="{% url 'accounts:register_doctor' %}"><i class="fas fa-user-md"></i> Register Doctor</a>
-                        <a class="dropdown-item" href="{% url 'accounts:register_patient' %}"><i class="fas fa-user"></i> Register Patient</a>
-                        <a class="dropdown-item" href="{% url 'accounts:register_pharmacist' %}"><i class="fas fa-capsules"></i> Register Pharmacist</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-h"></i> More
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="moreDropdown">
-                        <a class="dropdown-item" href="#"><i class="fas fa-phone-alt"></i> Contact</a>
-						  <a class="dropdown-item" href="#"><i class="fas fa-hospital-alt"></i> Hospitals </a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-address-card"></i> About Us</a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> FAQ</a>
-                    </div>
-                </li>
+                <!-- More Dropdown -->  
+                <li class="nav-item dropdown">  
+                    <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  
+                        <i class="fas fa-ellipsis-h"></i> More  
+                    </a>  
+                    <div class="dropdown-menu" aria-labelledby="moreDropdown">  
+                        <a class="dropdown-item" href="#"><i class="fas fa-phone-alt"></i> Contact</a>  
+                        <a class="dropdown-item" href="#"><i class="fas fa-hospital-alt"></i> Hospitals</a>  
+                        <a class="dropdown-item" href="#"><i class="fas fa-address-card"></i> About Us</a>  
+                        <a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> FAQ</a>  
+                    </div>  
+                </li>  
 
-                {% if user.is_authenticated %}
-                    {% if user.role == 'doctor'  %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="doctorDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-user-md"></i> Dashboard
+                <!-- Auth Dropdown -->  
+                {% if user.is_authenticated %}  
+                    {% if user.role == 'doctor' %}  
+                        <li class="nav-item dropdown">  
+                            <a class="nav-link dropdown-toggle" href="#" id="doctorDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  
+                                <i class="fas fa-user-md"></i> Dashboard  
+                            </a>  
+                            <div class="dropdown-menu" aria-labelledby="doctorDropdown">  
+                                <a class="dropdown-item" href="{% url 'doctor:doctor_report' %}"><i class="fas fa-tachometer-alt"></i> Doctor Dashboard</a>  
+                                <a class="dropdown-item" href="{% url 'ai_chat:chat' %}"><i class="fas fa-robot-alt"></i> Medical AI Assistant</a>  
+                                <a class="dropdown-item" href="{% url 'doctor:doctor_appointments' %}"><i class="fas fa-calendar-check"></i> Manage Appointments</a>  
+                                <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Update Profile</a>  
+                                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>  
+                            </div>  
+                        </li>  
+                    {% elif user.role == 'pharmacist' %}  
+                        <li class="nav-item dropdown">  
+                            <a class="nav-link dropdown-toggle" href="#" id="pharmacistDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  
+                                <i class="fas fa-pills"></i> Dashboard  
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="doctorDropdown">
-								<a class="dropdown-item" href="{% url 'doctor:doctor_report' %}"><i class="fas fa-tachometer-alt"></i> Doctor Dashboard</a>
-								<a class="dropdown-item" href="{% url 'ai_chat:chat' %}"><i class="fas fa-robot-alt"></i> Medical AI Assistant</a>
-                                <a class="dropdown-item" href="{% url 'doctor:doctor_appointments' %}"><i class="fas fa-calendar-check"></i> Manage Appointments</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Update Profile</a>
-                                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                            </div>
-                        </li>
-                    {% elif user.role == 'pharmacist' %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="pharmacistDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-pills"></i> Dashboard
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="pharmacistDropdown">
-                                <a class="dropdown-item" href="#"><i class="fas fa-tachometer-alt"></i> Pharmacist Dashboard</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-boxes"></i> Manage Inventory</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Update Profile</a>
-                                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                            </div>
-                        </li>
-                    {% elif user.role == 'patient' %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="patientDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-user"></i> My Account
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="patientDropdown">
-                                <a class="dropdown-item" href="#"><i class="fas fa-tachometer-alt"></i> Patient Dashboard</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-notes-medical"></i> My Consultations</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Update Profile</a>
-								<a class="dropdown-item" href="{% url 'core:patient_profile' %}"><i class="fas fa-file-medical-alt"></i> Medical History</a>
-                                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                            </div>
-                        </li>
-                    {% endif %}
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
+                                        <div class="dropdown-menu" aria-labelledby="pharmacistDropdown">  
+                            <a class="dropdown-item" href="#"><i class="fas fa-tachometer-alt"></i> Pharmacist Dashboard</a>  
+                            <a class="dropdown-item" href="#"><i class="fas fa-boxes"></i> Manage Inventory</a>  
+                            <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Update Profile</a>  
+                            <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>  
+                        </div>  
+                    </li>  
+                    {% elif user.role == 'patient' %}  
+                        <li class="nav-item dropdown">  
+                            <a class="nav-link dropdown-toggle" href="#" id="patientDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  
+                                <i class="fas fa-user"></i> My Account  
+                            </a>  
+                            <div class="dropdown-menu" aria-labelledby="patientDropdown">  
+                                <a class="dropdown-item" href="#"><i class="fas fa-tachometer-alt"></i> Patient Dashboard</a>  
+                                <a class="dropdown-item" href="#"><i class="fas fa-notes-medical"></i> My Consultations</a>  
+                                <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Update Profile</a>  
+                                <a class="dropdown-item" href="{% url 'core:patient_profile' %}"><i class="fas fa-file-medical-alt"></i> Medical History</a>  
+                                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>  
+                            </div>  
+                        </li>  
+                    {% endif %}  
+                {% else %}  
+                    <li class="nav-item">  
+                        <a class="nav-link" href="{% url 'accounts:login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>  
+                    </li>  
+                {% endif %}  
+            </ul>  
+        </div>  
+    </div>  
 </nav>
-
 </header>
-	
+
 
 
 {% block content %}
@@ -695,6 +804,7 @@
         font-size: 1.8rem;
     }
 }
+    
 
 
 

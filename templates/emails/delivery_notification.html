@@ -1,0 +1,10 @@
+<!-- templates/emails/delivery_notification.html -->
+<html>
+<body>
+    <h1>Delivery Notification</h1>
+    <p>Dear {{ order.user.get_full_name }},</p>
+    <p>Your order (Order ID: {{ order.id }}) has been delivered.</p>
+    <p>Delivery time: {{ order.delivery.actual_delivery_time }}</p>
+    <p>Thank you for choosing our service!</p>
+</body>
+</html>

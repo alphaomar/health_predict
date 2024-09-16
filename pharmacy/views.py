@@ -160,8 +160,14 @@ class CheckoutView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         form.instance.total_amount = self.request.user.cart.total_price
+
+        # Assign a pharmacy to the order
+        # You might want to change this logic based on your specific requirements
+        default_pharmacy = get_object_or_404(Pharmacy, id=1)  # Assuming you have at least one pharmacy in the database
+        form.instance.pharmacy = default_pharmacy
+
         order = form.save()
-        
+
         cart = self.request.user.cart
         for item in cart.items.all():
             OrderItem.objects.create(
@@ -170,17 +176,17 @@ class CheckoutView(LoginRequiredMixin, CreateView):
                 quantity=item.quantity,
                 price=item.medication.price
             )
-        
+
         self.request.session['order_id'] = order.id
-        
+
         payment_method = self.request.POST.get('payment_method')
-        
+
         if payment_method == 'stripe':
             return redirect('payment:stripe_payment')
         elif payment_method == 'paypal':
             return redirect('payment:paypal_payment')
         else:
-            return redirect('pharmacy:order_confirmation')        
+            return redirect('pharmacy:order_confirmation')
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'pharmacy/order_list.html'
